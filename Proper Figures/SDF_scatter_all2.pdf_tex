@@ -1,0 +1,150 @@
+%% Creator: Inkscape 1.4 (86a8ad7, 2024-10-11), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'SDF_scatter_all2.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{940.67839375bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.49621945)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{SDF_scatter_all2.pdf}}%
+    \put(0.07441214,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.10}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{SDF_scatter_all2.pdf}}%
+    \put(0.14089021,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{SDF_scatter_all2.pdf}}%
+    \put(0.20736828,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.00}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{SDF_scatter_all2.pdf}}%
+    \put(0.27384635,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{SDF_scatter_all2.pdf}}%
+    \put(0.34032442,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.10}\end{tabular}}}}%
+    \put(0.20736828,0.25502666){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{Ground truth distance}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{SDF_scatter_all2.pdf}}%
+    \put(0.06697071,0.28895297){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}\textbf{-0.15}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{SDF_scatter_all2.pdf}}%
+    \put(0.06697071,0.37735725){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}\textbf{0.00}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{SDF_scatter_all2.pdf}}%
+    \put(0.06697071,0.46576154){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}\textbf{0.15}\end{tabular}}}}%
+    \put(0.01352522,0.38366786){\rotatebox{90}{\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{Neural distance}\end{tabular}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{SDF_scatter_all2.pdf}}%
+    \put(0.06636834,0.03406602){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}\textbf{-0.15}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{SDF_scatter_all2.pdf}}%
+    \put(0.06636834,0.12247031){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}\textbf{0.00}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{SDF_scatter_all2.pdf}}%
+    \put(0.06636834,0.21087459){\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}\textbf{0.15}\end{tabular}}}}%
+    \put(0.01292285,0.12878091){\rotatebox{90}{\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{Neural distance}\end{tabular}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{SDF_scatter_all2.pdf}}%
+    \put(0.20736828,0.47845052){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{SALD}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{SDF_scatter_all2.pdf}}%
+    \put(0.39350688,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.10}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{SDF_scatter_all2.pdf}}%
+    \put(0.45998491,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{SDF_scatter_all2.pdf}}%
+    \put(0.52646298,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.00}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=16]{SDF_scatter_all2.pdf}}%
+    \put(0.59294105,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=17]{SDF_scatter_all2.pdf}}%
+    \put(0.65941912,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.10}\end{tabular}}}}%
+    \put(0.52646298,0.25502666){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{Ground truth distance}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=18]{SDF_scatter_all2.pdf}}%
+    \put(0.52646298,0.47845052){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{HESS}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=19]{SDF_scatter_all2.pdf}}%
+    \put(0.71260158,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.10}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=20]{SDF_scatter_all2.pdf}}%
+    \put(0.77907965,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=21]{SDF_scatter_all2.pdf}}%
+    \put(0.84555772,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.00}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=22]{SDF_scatter_all2.pdf}}%
+    \put(0.91203578,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=23]{SDF_scatter_all2.pdf}}%
+    \put(0.97851385,0.27488221){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.10}\end{tabular}}}}%
+    \put(0.84555772,0.25502666){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{Ground truth distance}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=24]{SDF_scatter_all2.pdf}}%
+    \put(0.84555772,0.47845052){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{1-Lip}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=25]{SDF_scatter_all2.pdf}}%
+    \put(0.07458318,0.02014623){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.10}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=26]{SDF_scatter_all2.pdf}}%
+    \put(0.14106125,0.02014623){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=27]{SDF_scatter_all2.pdf}}%
+    \put(0.20753926,0.02014623){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.00}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=28]{SDF_scatter_all2.pdf}}%
+    \put(0.27401739,0.02014623){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=29]{SDF_scatter_all2.pdf}}%
+    \put(0.34049539,0.02014623){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.10}\end{tabular}}}}%
+    \put(0.20753926,0.00029068){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{Ground truth distance}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=30]{SDF_scatter_all2.pdf}}%
+    \put(0.20753926,0.22371454){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{HotSpot}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=31]{SDF_scatter_all2.pdf}}%
+    \put(0.39367785,0.02014623){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.10}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=32]{SDF_scatter_all2.pdf}}%
+    \put(0.46015598,0.02014623){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=33]{SDF_scatter_all2.pdf}}%
+    \put(0.52663399,0.02014623){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.00}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=34]{SDF_scatter_all2.pdf}}%
+    \put(0.59311212,0.02014623){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=35]{SDF_scatter_all2.pdf}}%
+    \put(0.65959013,0.02014623){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.10}\end{tabular}}}}%
+    \put(0.52663399,0.00029068){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{Ground truth distance}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=36]{SDF_scatter_all2.pdf}}%
+    \put(0.52663399,0.22371454){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{HeatSDF}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=37]{SDF_scatter_all2.pdf}}%
+    \put(0.71380632,0.020412){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.10}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=38]{SDF_scatter_all2.pdf}}%
+    \put(0.78028445,0.020412){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{-0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=39]{SDF_scatter_all2.pdf}}%
+    \put(0.84676246,0.020412){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.00}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=40]{SDF_scatter_all2.pdf}}%
+    \put(0.91324059,0.020412){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.05}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=41]{SDF_scatter_all2.pdf}}%
+    \put(0.97971859,0.020412){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{0.10}\end{tabular}}}}%
+    \put(0.84676246,0.00055645){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{Ground truth distance}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=42]{SDF_scatter_all2.pdf}}%
+    \put(0.84676246,0.2239803){\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{NeatSDF}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=43]{SDF_scatter_all2.pdf}}%
+  \end{picture}%
+\endgroup%
