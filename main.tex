@@ -104,7 +104,7 @@
 
 \institut{Institut f\"ur Numerische Simulation}
 %Title of the thesis 
-\title{A neural framework for geometric PDEs\\on neural implicit surfaces}
+\title{A framework for \\ neural geometric PDEs\\on neural implicit surfaces}
 %Do not change!
 \ausarbeitungstyp{Master's Thesis  Mathematics}
 \date{\today}
@@ -121,7 +121,7 @@
 \let\clearpage\relax
 
 \begin{abstract}
-This thesis presents a neural framework for solving geometric partial differential equations (PDEs) on neural implicit manifolds; we first introduce a novel approach for constructing highly accurate signed distance functions (SDFs) from unoriented point clouds by replacing the commonly used Eikonal equation with a neural variational heat-based approach. Although similar approaches have been used in the past to compute distances on discrete surfaces, but these have yet to be applied in a neural setting. Our approach consists of two convex optimization problems: First, we compute a neural approximation of the heat equation using a small time step and a density-dependent approximation of the surface measure as initial data. Secondly, we use the normalized gradients of the heat solution to compute the SDF. Utilising this approach, we construct two different SDF methods, one focussing on global and one on local approximation. We show that the underlying variational problems are well-posed for both methods.
+This thesis presents a neural framework for solving geometric partial differential equations (PDEs) on neural implicit manifolds; we first introduce a novel approach for constructing highly accurate signed distance functions (SDFs) from unoriented point clouds by replacing the commonly used Eikonal equation with a neural variational heat-based approach. Similar approaches have been used in the past to compute distances on discrete surfaces, but these have yet to be applied in a neural setting. Our approach consists of two convex optimization problems: First, we compute a neural approximation of the heat equation using a small time step and a density-dependent approximation of the surface measure as initial data. Secondly, we use the normalized gradients of the heat solution to compute the SDF. Utilising this approach, we construct two different SDF methods, one focussing on global and one on local approximation. We show that the underlying variational problems are well-posed for both methods.
 Through numerical experiments, we demonstrate that our methods provides state-of-the-art surface reconstruction and consistent SDF gradients.\par
 Finally, we present a novel neural framework for solving geometric PDEs. We address this by adapting the well-known narrow-band method from the discrete to the neural setting. Discrete narrow-band methods have shown to be exceptionally powerful when working with complex geometries; an adaptation using neural networks will allow to examine the new field of neural geometric PDEs. Using various examples, we demonstrate that combining the heat-based neural SDF method with the neural narrow-band approach can accurately solve PDEs on the zero-level set.
 \end{abstract}
@@ -129,13 +129,12 @@ Finally, we present a novel neural framework for solving geometric PDEs. We addr
 \endgroup
 First and foremost, I would like to express my sincere gratitude to my supervisor, Prof. Martin Rumpf, for his continuous support, valuable guidance, and insightful discussions throughout the course of this thesis.
 \par
-I would also like to thank Florine Hartwig, Dr. Josua Sassen, Prof. Sergio Conti, Prof. Mirela Ben-Chen, and Prof. Martin Rumpf, with whom parts of this work were developed in collaboration. This collaboration led to the publication of the paper:
-\vspace{0.5em}
-\noindent
+I would also like to thank Florine Hartwig, Dr. Josua Sassen, Prof. Sergio Conti, Prof. Mirela Ben-Chen, and Prof. Martin Rumpf, with whom parts of this work were developed in collaboration. This collaboration led to the publication of the paper:\\
+\hspace{0.5em}\\
 \textit{Samuel Weidemaier, Florine Hartwig, et al., "SDFs from Unoriented Point Clouds using Neural Variational
-Heat Distances", 2025.}
-\,
-\vspace{0.5em}
+Heat Distances", 2025.}\\
+\hspace{0.5em}
+\\
 The work leading to this publication was supported by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) via project 211504053 -- Collaborative Research Center 1060 and via Germany’s Excellence Strategy project 390685813 -- Hausdorff Center for Mathematics.
 Furthermore, this project has received funding from the European Union’s Horizon 2020 research and innovation program under the Marie Skłodowska-Curie grant agreement No 101034255, as well as the Israel Science Foundation (grant No. 1073/21).\\
 Some of the ideas and results presented in this thesis are based on this joint work.\par 
@@ -153,13 +152,13 @@ Finally, I am deeply grateful to my family and my girlfriend for their constant 
     \label{teaser}
 \end{figure}
 This thesis proposes a novel approach to numerically approximate signed distance functions (SDFs) from unoriented point clouds using neural networks. In a second step, we utilize these neural SDFs to solve geometric partial differential equations (PDEs) using a neural narrow-band approach.\par
-After revisiting the basic concepts from the calculus of variations, differential geometry, and neural networks (\Cref{ch:prelim}), we turn our attention towards the computation of SDFs using a variational heat-based ansatz (\Cref{SectionNeuralImplicitSurf}). To this end, we replace the commonly used Eikonal equation ($\|\nabla \phi\| = 1$) with the heat method, carrying over to a neural setting what has long been standard practice for computing distances on discrete surfaces. This approach requires first the neural approximation of the unsigned gradients through a small time step of the heat equation. Using a second neural network, we then orient the gradient directions and fix the zero-level set to approximate the SDF. We show that both minimization problems are well-posed. This approach is based on concepts developed in joint work, as published in \cite{weidemaier2025sdfsunorientedpointclouds}. Furthermore, we present novel ideas on how to adapt and improve this method. Through numerical experiments, we demonstrate that our method provides state-of-the-art surface reconstruction and consistent SDF gradients.\par
-The second part of the thesis presents, to our knowledge, a new framework for neural geometric PDEs, a class of PDEs in which the solution is governed by intrinsic geometric properties of the domain (\Cref{NPDEsonSurfaces}); for this, we extend the classical narrow-band method, used for example in combination with geometric finite elements and difference methods, to a neural setting. In various examples, we demonstrate that our SDF approach in combination with the neural narrow-band method is accurate enough to solve PDEs on the zero-level set.
-
+After revisiting the basic concepts from the calculus of variations, differential geometry, and neural networks (\Cref{ch:prelim}), we turn our attention towards the computation of SDFs using a variational heat-based ansatz (\Cref{SectionNeuralImplicitSurf}). To this end, we replace the commonly used Eikonal equation ($\|\nabla \phi\| = 1$) with the heat method, carrying over to a neural setting what has long been standard practice for computing distances on discrete surfaces. This approach requires first the neural approximation of the unsigned gradients through a small time step of the heat equation. Using a second neural network, we then orient the gradient directions and fix the zero-level set to approximate the SDF. Using the methods from \cref{ch:prelim}, we show that both minimization problems are well-posed. This approach is based on ideas developed in joint work published in \cite{weidemaier2025sdfsunorientedpointclouds}. Furthermore, we present novel ideas on how to adapt and improve this method. Through numerical experiments, we demonstrate that our method provides state-of-the-art surface reconstruction and consistent SDF gradients.\par
+The second part of the thesis presents, to our knowledge, a new framework for neural geometric PDEs, a class of PDEs in which the solution is governed by intrinsic geometric properties of the domain (\Cref{NPDEsonSurfaces}); for this, we extend the classical narrow-band method, used for example in combination with geometric finite elements and difference methods, to a neural setting. In various examples, we demonstrate that our SDF approach in combination with the neural narrow-band method is accurate enough to solve PDEs on the zero-level set.\par
+Further technical details related to the proofs in \cref{SectionNeuralImplicitSurf}, as well as additional experiments, are provided in the appenix (\Cref{appendix}).
 \newpage
 \pagenumbering{arabic}
 \chapter{Preliminaries}\label{ch:prelim}
-In this chapter, we recall the fundamental mathematical concepts that form the basis of the methods developed later in this thesis. Our goal is to approximate signed distance functions from unoriented point clouds using a variational heat ansatz and then to solve geometric partial differential equations using neural networks, both based on rigorous mathematical theory. For this purpose, we begin by revisiting the core ideas of the following areas:
+In this chapter, we recall the fundamental mathematical concepts that form the basis of the methods developed later in this thesis. Our goal is to approximate signed distance functions from unoriented point clouds using a variational ansatz and then to solve geometric partial differential equations using neural networks, both based on rigorous mathematical theory. For this purpose, we begin by revisiting the core ideas of the following areas:
 \begin{itemize}
     \item \emph{Calculus of variations}, with a focus on the formulation and analysis of variational problems and their connection to partial differential equations.
     
@@ -170,7 +169,7 @@ In this chapter, we recall the fundamental mathematical concepts that form the b
 These keystones will equip the reader with the mathematical background to follow the subsequent developments and analysis.\\
 For most of the theorems in this section, we will omit the proofs and refer the reader to standard textbooks, cited at the beginning of the respective section.
 \section{Variational Calculus and Neural Networks}
-We begin with an introduction to the basic concept of the calculus of variations; thereafter, we will discuss its connections to neural networks. For a complete introduction to the calculus of variations, see, for example, \cite{Dacorogna}. Regarding a detailed overview on mathematical neural networks, we refer to \cite{e2020mathematicalunderstandingneuralnetworkbased}.
+We begin with an introduction to the basic concept of the calculus of variations; thereafter, we will discuss its application in the context of neural networks. For a complete introduction to the calculus of variations, see, for example, \cite{Dacorogna}. Regarding a detailed overview on mathematical neural networks, we refer to \cite{e2020mathematicalunderstandingneuralnetworkbased}.
 \begin{definition}
 Let X be a real Banach space with norm $\|\cdot\|_X$, and let $I: X\rightarrow\R$ be a map.
 \begin{itemize}
@@ -194,7 +193,7 @@ Let X be a real Banach space with norm $\|\cdot\|_X$, and let $I: X\rightarrow\R
     Let $X$ be a real Banach space and let \mbox{$I: X\rightarrow\R$} be a map. Then I is called \emph{Gateaux differentiable} at $u\in X$, if $\forall w\in X$ the map $$\tau \mapsto I(u + \tau w)$$ is differentiable at $\tau = 0$.
 \end{definition}
 \begin{definition}\label{EL_eq}\textbf{(Euler-Lagrange equation:)}
-Let X be a real Banach space and let \mbox{$I: X\rightarrow\R$} be a map. Assume $u_0\in X$ is a minimizer of $I$ on $X$, $u_0 = \mathrm{argmin}_u I(u)$ and $I$ is Gateaux differentiable at $u_0$. Then the minimizer $u_0$ is a solution of the \emph{Euler-Lagrange equation} $$I'(u_0)(w) = 0, \quad \forall w \in X.$$
+Let X be a real Banach space and let \mbox{$I: X\rightarrow\R$} be a map. Assume $u_0\in X$ is a minimizer of $I$ on $X$, \mbox{$u_0 = \mathrm{argmin}_u I(u)$} and $I$ is Gateaux differentiable at $u_0$. Then the minimizer $u_0$ is a solution of the \emph{Euler-Lagrange equation} $$I'(u_0)(w) = 0, \quad \forall w \in X.$$
 \end{definition}
 
 \begin{definition}\textbf{(Artificial neural network:)}
@@ -222,13 +221,13 @@ Now that we have introduced the notion of a neural network, let us exploit the t
 $$ where $\Omega \subset \R^n $ is bounded, one typically makes the ansatz \begin{align*}
     \min_u I(u)\text{, where } I(u) := \int_\Omega \frac{1}{2} \|\nabla u\|^2 - fu \,\mathrm{dx} + \lambda\int_{\partial \Omega} (u(x)- g(x))^2\, \mathrm{da},\quad(\star)
 \end{align*}
-where $u(x) = \mathcal N_\theta(x)$ for some set of trainable parameters $\theta$, $\lambda\in \R^+$. One then seeks to approximate a minimizer typically using stochastic gradient descent. Minimizers of $(\star)$ are to weak solutions of $(\triangle)$, which can be seen by considering the Euler-Lagrange equation. We prefer this approach over other neural PDE methods, since existence of minimizers of functionals $I(u)$ can often be shown using the methods of variational calculus. Note that here and in the following $\|\cdot\|$ denotes the vector norm in $\R^3$ and $\R^+$ are the positive real numbers.\\
+where $u(x) = \mathcal N_\theta(x)$ for some set of trainable parameters $\theta$, and fixed $\lambda\in \R^+$. One then seeks to approximate a minimizer typically using stochastic gradient descent. Note that here and in the following $\|\cdot\|$ denotes the vector norm in $\R^3$ and $\R^+$ are the positive real numbers. Minimizers of $(\star)$ are weak solutions of $(\triangle)$, which can be seen by considering the Euler-Lagrange equation. We prefer this approach over other neural PDE methods, since existence of minimizers of functionals similar to $I(u)$ can often be shown using the methods of variational calculus.\\
 The more convenient alternative to the Deep Ritz method is often referred to as a \emph{Physics Informed Neural Network} (PINN), \cite{RAISSI2019686}. PINNs minimize the squared residual of the respective PDE, for example, in the case of Poisson's equation:
 $$ \min_u I_{PINN}(u)\text{, where } I_{PINN}(u) := \int_\Omega |\Delta u + f|^2 \,\mathrm{dx}\, +\, \lambda \int_{\partial\Omega}(u(x) - g(x))^2 \, \mathrm{da}  .$$
 Both the Deep Ritz method and PINNs demonstrate comparable approximation quality in practice and no significant empirical advantage has been consistently observed for a variety of problems for one method over the other, \cite{yang2025numericalstudyhyperparameter}. 
 We here want to point out that the PINN framework requires the computation of higher-order derivatives, which leads to increased computational effort. Furthermore, the PINN approach is in general numerically more unstable.
 \section{Differential Geometry}
-Within this section, we define the notion of a signed distance function in $\R^3$ and elaborate on the key properties. Afterwards, we will recall the definitions of differential operators on implicit surfaces. Note that most of the following results generalize naturally to $\R^n$. However, since the focus of this thesis are surfaces embedded in $\R^3$, we restrict the following theoretical framework to the case $n=3$.\\
+Within this section, we define the notion of a signed distance function in $\R^3$ and elaborate its key properties. Afterwards, we will recall the definitions of differential operators on implicit surfaces. Note that most of the following results generalize naturally to $\R^n$. However, since the focus of this thesis will be surfaces embedded in $\R^3$, we restrict the following theoretical framework to the case $n=3$.\\
 For a more general introduction to differential geometry, see, for example, \cite{Lee00}, or, more specifically for implicit manifolds, \cite{Dziuk_Elliott_2013}. Regarding the theory on geodesics, we refer to \cite{Dacorogna}.
 \begin{definition}\textbf{(Manifolds and embedded surfaces:)}
 A \emph{smooth manifold} \(\mathcal{M}\) of dimension \(n\) is a topological space in which every point \(p \in \mathcal{M}\) has a neighborhood that can be continuously and invertibly mapped to an open subset of \(\mathbb{R}^n\), with the additional requirement that the transition functions between overlapping neighborhoods, when expressed in \(\mathbb{R}^n\), are smooth.\par
@@ -243,7 +242,7 @@ In particular, a \emph{smooth surface} \(\mathcal{S} \subset \mathbb{R}^3\) is a
     Note for completeness, that the existence of exactly two connected components, one bounded and one unbounded, is given by the \emph{Jordan-Brouwer Separation Theorem}. For a proof, see, for example, \cite{Lima01011988}. 
 \end{remark}
 \begin{definition}\textbf{(Signed distance function:)}
-    Let $\S$ be a smooth surface, that admits the assumptions of \cref{defInsOuts}. A \emph{signed distance function} (SDF) associated to a surface $\S$ is a scalar function 
+    Let $\S$ be a smooth surface, that admits the assumptions of \cref{defInsOuts}. A \emph{signed distance function} (SDF) associated to $\S$ is a scalar function 
     $$\phi: \R^3 \rightarrow \R$$
     such that:
     $$\phi(x) = 
@@ -287,7 +286,7 @@ $\mathrm{sign}(\phi(x)) = - \mathrm{sign}(\phi (y))$ for all $x$ inside and $y$ 
 $$\mathcal M_c=\{x\in\R^3 \text{ , s.t. } \psi(x)=c\}.$$
     In this case, $n(x) = \frac{\nabla \phi(x)}{\|\nabla \phi(x)\|}$ defines the normal vector at $x$ whenever $\|\nabla \phi\| \ne 0$, and $$T_x\mathcal{M}_c = \{v\in \R^{d+1} \text{, s.t. } v\cdot n = 0\}$$ the tangent space of $\mathcal{M}_c$ at the point $x$. In the following, we will set $\S = \mathcal{M}_0$.
 \end{definition}
-Such an implicit representation of a surface allows flexible modeling of complex geometries without explicitly parameterizing the surface. In the case where an implicit surface is defined by an SDF, the notion of the normal simplifies: $n(x) = {\nabla \phi(x)}$.  
+Such an implicit representation of a surface allows flexible modeling of complex geometries without explicitly parameterizing the surface. In the case where an implicit surface is defined by an SDF, the notion of the normal simplifies: \mbox{$n(x) = {\nabla \phi(x)}$}.  
 \begin{definition}\label{def:diff_ops_implicit_surface}\textbf{(Differential operators on implicit surfaces:)} Let $$\mathcal{M}_c = \{ x \in \mathbb{R}^{3} : \phi(x) = 0 \}$$ be an implicitly defined surface. 
 The \emph{orthogonal projection} onto the tangent space \(T_x \mathcal{M}_c\) is given by
 \[
@@ -296,7 +295,7 @@ P(x) = \mathbf I - n(x) n(x)^T,
 where \(\mathbf I\) denotes the identity matrix of dimension three.
 The \emph{mean curvature} \(H\) at \(x\) can be expressed as
 \[
-H =  \nabla \cdot \left( \frac{\nabla \phi}{\|\nabla \phi\|} \right).
+H(x) =  \nabla \cdot \left( \frac{\nabla \phi(x)}{\|\nabla \phi(x)\|} \right).
 \]
 For a scalar function \(f : \mathcal{U}(\mathcal{M}_c) \to \mathbb{R}\) defined in a neighborhood \(\mathcal{U}(\mathcal{M}_c)\) of the surface, the \emph{surface gradient} is defined as the projection of the ambient gradient,
 \[
@@ -314,10 +313,10 @@ Similarly, for a vector field \(v : \mathcal{U}(\mathcal{M}_c) \to \mathbb{R}^{d
     $$\int_{\mathcal{M}_c}\nabla_{\mathcal{M}_c} \psi \cdot v\,\mathrm{da}= -\int_{\mathcal{M}_c}\psi\, \operatorname{div}_{\mathcal{M}_c} v\,\mathrm{da}+ \int_{\partial\mathcal{M}_c }\psi\,v\cdot \mu, da
     $$
     for all $\psi\in C_c^\infty(\R^3)$. 
-    Here $\mu$ denotes the co-normal vector which is normal to $\partial \mathcal{M}_c$ and tangent to $\mathcal{M}_c$. In case of compact hypersurfaces, $\partial \mathcal{M}_c = \emptyset$, the last term in the right vanishes.
+    Here $\mu$ denotes the co-normal vector which is normal to $\partial \mathcal{M}_c$ and tangent to $\mathcal{M}_c$. In case of compact surfaces, $\partial \mathcal{M}_c = \emptyset$, the last term in the right vanishes.
 \end{lemma}
-This formula shows the duality of the manifold gradient and divergence operators on a closed surface.
-\begin{lemma}\label{Co_Area_form}\textbf{(Co-area formular:)} Let $\phi$ be an SDF and let $\{\mathcal{M}_c\}_{a\leq c \leq b }$ be a family of regular implicit hypersurfaces for $a,b \in \R$ and let $f\in \mathcal{C}^0_b(\R^3)$ be continuous and bounded. Then:
+
+\begin{lemma}\label{Co_Area_form}\textbf{(Co-area formular:)} Let $\phi$ be an SDF and let $\{\mathcal{M}_c\}_{a\leq c \leq b }$ be a family of smooth implicit surfaces for $a,b \in \R$ and let $f\in \mathcal{C}^0_b(\R^3)$ be continuous and bounded. Then:
 $$\int_a^b\Big(\int_{\mathcal{M}_c} f(x) da\Big) dc = \int_{\R^3} f(x)\, \chi_{\{a\leq \phi(x)\leq b\}}\,\mathrm{dx}$$
 \end{lemma}
 For a proof of the co-area formula in the level-set context, see \cite{evans}. 
@@ -337,10 +336,10 @@ d_{\mathcal{M}}(x,y) := \inf_{\gamma \in \text{AC}(\mathcal M_c)} \int_0^1 \|\do
 \let\cleardoublepage\clearpage
 \chapter{Neural Implicit Surfaces}\label{SectionNeuralImplicitSurf}
 \paragraph*{Motivation:} 
-The analysis and numerical solution of partial differential equations is a central problem in applied mathematics and scientific computing. Many equations of interest - for example, those emerging from geometric processing and physics - are naturally posed on surfaces or manifolds rather than in flat Euclidean space. This motivates the development of neural computational frameworks capable of handling such geometries in a flexible and accurate manner. In recent years, the field of geometric deep learning has emerged, trying to extend neural network methods to non-Euclidean settings, such as manifolds and implicit surfaces. \\
+The analysis and numerical solution of partial differential equations is a central problem in applied mathematics and scientific computing. Many equations of interest - for example, those emerging from geometric processing and physics - are naturally posed on surfaces or manifolds rather than in flat Euclidean space. This motivates the development of neural computational frameworks capable of handling such geometries in a flexible and accurate manner. In recent years, the field of geometric deep learning has emerged, trying to extend neural network methods to non-Euclidean settings, such as manifolds. \\
 Within this area, we focus on representing a single surface embedded in $\R^3$; for this, we want to represent the surface by a neural implicit function, namely a network that encodes a function $\phi:\R^3\rightarrow\R$, whose $c$-level set is the desired surface. In this context, signed distance functions have proven to be a powerful tool (e.g., \cite{jiang2022sdfdiffdifferentiablerenderingsigned,survey_SDFs}). An SDF implicitly defines a surface $\mathcal S \subset \R^3$ as the zero-level set of $\phi$, where $\phi$ gives the signed distance to $\S$. This implicit representation naturally encodes surface normals, and is well-suited for differential operations.\\
 In practice, non-neural SDFs are typically computed on discrete grids or meshes, see, e.g., \cite{FengCrane}; however, such representations are limited in resolution, memory, and flexibility. In contrast, neural SDFs provide a continuous and differentiable approximation of the distance field, allowing for resolution-independent evaluations and smooth gradient information. Furthermore, neural implicits are memory efficient, since the geometry is encoded compactly in the network weights instead of dense voxel grids.\\
-Neural implicits, especially neural SDFs, have found application in geometric applications beyond surface reconstruction, e.g., solving PDEs and geometric flows, \cite{mehta2022levelsettheoryneural}, and performing constructive solid geometry on neural surfaces, \cite{marschner2023constructive}.  For these applications, it is important that the SDF reconstructs the zero-level set and is highly accurate in a narrow band near the surface.\\
+Neural implicits, especially neural SDFs, have found application in geometric applications beyond surface reconstruction, e.g., solving geometric flows, \cite{mehta2022levelsettheoryneural}, and performing constructive solid geometry on neural surfaces, \cite{marschner2023constructive}.  For these applications, it is important that the SDF reconstructs the zero-level set and is highly accurate in a narrow band near the surface.\\
 Within this thesis, we will consider numerical methods that are unsupervised (i.e., do not use a ground truth SDF or similar data as input), do not learn priors from a dataset, and especially do not require normal orientation. Thus, we consider the most general type of methods, which are able to learn an SDF from an unoriented point cloud. Although most attention has traditionally been given to the practical computation of this task, we think that it is equally important to ensure that the learning framework is grounded in solid mathematical theory. \\
 This section aims to bridge the gap between theoretical foundations and state-of-the-art practical algorithms.
 
@@ -361,13 +360,13 @@ Neural implicit representations are a novel approach in machine learning that ut
   
 \paragraph{Neural signed distance functions:}  
 Of the various applications of implicit neural representations, representing surfaces as the zero-level set of a signed distance function has proven especially powerful.
-This approach has several appealing properties: it yields a continuous and differentiable representation of geometry, encodes surface normals through the gradient, and enables efficient evaluation and differentiation at arbitrary spatial resolutions. These features make neural SDFs particularly suitable not only for shape reconstruction and rendering, but also for geometric reasoning tasks and solving surface PDEs.\par
+This approach has several appealing properties: it yields a continuous and differentiable representation of the geometry, encodes surface normals through its gradient, and enables efficient evaluation and differentiation at arbitrary spatial resolutions. These features make neural SDFs particularly suitable not only for shape reconstruction and rendering, but also for geometric reasoning tasks and solving surface PDEs.\par
 The first work on this topic was carried out by \cite{park2019deepsdflearningcontinuoussigned}, who trained neural networks using ground truth distance values sampled on grids. Since then, more flexible and enhanced methods have been proposed. In particular, extensions to unsupervised settings using unoriented point clouds have broadened the applicability of neural SDFs. Amongst these enhancements, we want to highlight \cite{sitzmann2020implicitneuralrepresentationsperiodic}; their use of sinusoidal activation functions enabled the reconstruction of fine geometric details and has influenced a wide range of subsequent work, e.g., \cite{wang2023neuralsingularhessianimplicitneuralrepresentation}. Further details on this and related methods are provided in \cref{Comps}, which surveys state-of-the-art neural SDF approaches.
 \section{Method}\label{section_SDFmethod}
 \paragraph{Disclaimer:} The following method has been developed in joint work with Florine Hartwig, Dr. Josua Sassen, Prof. Sergio Conti, Prof. Mirela Ben-Chen, and Prof. Martin Rumpf, and was published in \cite{weidemaier2025sdfsunorientedpointclouds}. Within this chapter, we want to recall this work before developing some enhancements. We will refer to the original method as \emph{HeatSDF}; the enhanced method will be called \emph{NeatSDF}.
 \paragraph{Setup and conventions:}
-Let \(\mathcal{S} \subset \mathbb{R}^3\) denote a surface that is the boundary of a Lipschitz set \(\mathbb{S} \) and assume that $\S$ admits the requirements of \cref{defInsOuts}. In addition, let $\Omega \in \R^3$ be some bounded domain with $\S \subset \Omega$.
-Furthermore, let $x^\S_i\in \mathcal{S}, \, (i \leq N_{pt}\in \mathbb N)$ be the input point cloud.\\
+Let \(\mathcal{S} \subset \mathbb{R}^3\) denote a smooth surface that is the boundary of a Lipschitz set \(\mathbb{S} \) and assume that $\S$ admits the requirements of \cref{defInsOuts}. In addition, let $\Omega \in \R^3$ be some bounded domain with $\S \subset \Omega$.
+Furthermore, let $x^\S_i\in \mathcal{S}, \, (i \leq N_{pt}\in \mathbb N)$ be a point cloud.\\
 Our method consists of two main steps:
 \begin{enumerate}[align=left]
 \item[\textbf{Heat step:}]First, we solve the heat equation, $\partial_t u - \Delta u = 0$ for a small time $t$, using the points $\{x^\S_i\}$ as input; we refer to this step as \emph{heat step}.
@@ -401,7 +400,7 @@ If $\S$ is the boundary of a Lipschitz set, this measure is well-defined on $L^2
 \\
 With this in mind, \cref{loss_heat} reads
 \begin{align}\label{loss_heat2}
-    \mathcal{E}_{heat}[u] :&= \int_\Omega u^2 + \tau |\nabla u|^2 \,\mathrm{dx} - 2\fint_\mathcal{S} u da\\
+    \mathcal{E}_{heat}[u] :&= \int_\Omega u^2 + \tau |\nabla u|^2 \,\mathrm{dx} - 2\fint_\mathcal{S} u \, \mathrm{da}\\
     u_\tau &= \argmin_{u\in H^1(\Omega)} (\mathcal{E}_{heat}(u))
 \end{align}
 \begin{remark}
@@ -409,7 +408,7 @@ With this in mind, \cref{loss_heat} reads
 \end{remark}
 We will now prove that the minimization problem \cref{loss_heat2} has a unique minimizer and is therefore well-posed.
 \begin{theorem}\label{thm_exUniq_heat}{\textbf{(Existence and uniqueness - Heat step:)}}
-Let $\mathcal{S}$ be as defined above and let $0 < \tau < 1$. Then there is a unique function $u_\tau \in H^1(\Omega)$ minimizing \cref{loss_heat2}. Equivalently, there is a unique weak solution of \eqref{heat_discrete}.
+Let $\mathcal{S}$ be as defined above and let $0 < \tau \leq 1$. Then there is a unique function $u_\tau \in H^1(\Omega)$ minimizing \cref{loss_heat2}. Equivalently, there is a unique weak solution of \eqref{heat_discrete}.
 \end{theorem}
 \begin{remark}
 We are going to use the correspondence of weak solution of \cref{heat_discrete} and minimizers of \cref{loss_heat2}, together with the well-known \textbf{Lax-Milgram theorem:} Let \( H \) be a real Hilbert space, and let $\|\cdot\|_H$ denote the norm induced by the associated scalar product. Further let \( a : H \times H \to \mathbb{R} \) be a bilinear form satisfying:
@@ -433,11 +432,11 @@ a(u, v) = f(v) \quad \text{for all } v \in H.
     For $u,v \in H^1(\Omega)$, define $a: H^1(\Omega)\times H^1(\Omega) \rightarrow \R$ and $f: H^1(\Omega) \rightarrow\R$ by 
     \begin{align*}
         a(u,v) &:= \int_\Omega u\,v + \tau \,\nabla u\cdot\nabla v \,\mathrm{dx}\\
-        f(v) & := 2\int_\S v \,\mathrm{dx} 
+        f(v) & := 2\fint_\S v \,\mathrm{dx} 
     \end{align*}
     Then $f$ is well-defined for $v \in H^1(\Omega)$ by the trace theorem and especially bounded and linear.\\
     Further, using Hölder's inequality, we can estimate  $$a(u,v) \leq \|u\|_{L^2(\Omega)}\|v\|_{L^2(\Omega)} + \tau \|\nabla u\|_{L^2(\Omega)}\|\nabla v\|_{L^2(\Omega)} \leq (1 + \tau) \|u\|_{H^1(\Omega)}\|v\|_{H^1(\Omega)},$$ thus $a$ is bounded. Here and in the following $\|\cdot\|_{L^2(\Omega)}$ denotes the $L^2$-norm, $\|u\|_{L^2(\Omega)} \coloneqq \int_\Omega u^2\, \mathrm{dx}$, and similarly, $\|u\|_{H^1(\Omega)} \coloneqq \int_\Omega u^2 + \|\nabla u\|^2\, \mathrm{dx}$. \par
-    Furthermore, $a$ is coercive:  $$a(u,u) = \int_\Omega u^2 + \tau |\nabla u|^2 \,\mathrm{dx} = \tau \|u\|^2_{H^1(\Omega)} + (1-\tau) \|u\|^2_{L^2(\Omega)} \geq \tau \|u\|^2_{H^1(\Omega)},$$ for $\tau < 1$. Thus, the assumptions of Lax-Milgrams theorem are fulfilled. \\
+    Furthermore, $a$ is coercive:  $$a(u,u) = \int_\Omega u^2 + \tau |\nabla u|^2 \,\mathrm{dx} = \tau \|u\|^2_{H^1(\Omega)} + (1-\tau) \|u\|^2_{L^2(\Omega)} \geq \tau \|u\|^2_{H^1(\Omega)},$$ for $\tau \leq 1$. Thus, the assumptions of Lax-Milgrams theorem are fulfilled. \\
     This implies that there is a \emph{unique} weak solution of \cref{heat_discrete}. This solution is the minimizer of the energy $\mathcal{E}_{heat}$, which can be directly seen by computing the Euler-Lagrange equation. This concludes the proof.
 \end{proof}
 \paragraph{Unoriented normals to SDF:}
@@ -454,7 +453,7 @@ Putting the previously defined functionals together, we get our final functional
     \mathcal{E}_{SDF}(\phi) := \lambda_1\,\mathcal{E}_{surf} (\phi)+ \lambda_2\,\mathcal{E}_{n}(\phi) + \lambda_3\,\mathcal{E}_{bd}(\phi),
 \end{align}
 where $\lambda_i\in\R^+$ are scaling parameters to be chosen later.\\
-To the existence of minimizers of \eqref{E_SDF}, we need the following technical lemma: 
+To prove the existence of minimizers of \eqref{E_SDF}, we need the following technical lemma: 
 \begin{lemma}\label{technicalLemma}
     Let $n: \Omega \rightarrow \R^3$, such that the components of $n$ admit  $n_i\in L^2(\Omega, \R)$ (short: $n\in L^2(\Omega, \R^3)$), and let $\phi\in H^1(\Omega)$. Then the map $$\phi \mapsto \int_\Omega \nabla |\phi|\cdot n \,\mathrm{dx}$$ is weakly-$H^1$ continuous, i.e., for a sequence $\phi_i \xrightharpoonup{H^1}\phi$ we have that $$\lim_{i\rightarrow\infty}\int_\Omega \nabla|\phi_i|\cdot n  \,\mathrm{dx} = \int_\Omega \nabla|\phi|\cdot n\,\mathrm{dx}.$$
 \end{lemma}
@@ -468,7 +467,7 @@ This shows weak continuity of the term $\mathcal{E}_{surf}$. Regarding the norma
     & =\int_\Omega \|\nabla \phi\|^2  -2 \text{ sign} (\phi) \nabla \phi \cdot n^\tau  + \|n^\tau\|^2 \,\mathrm{dx} \quad \text{(binomial theorem)}\\
     &= \int_\Omega \|\nabla \phi\|^2  -2 \nabla |\phi| \cdot n^\tau  + 1 \,\mathrm{dx} \quad \text{(chain rule)}
 \end{align*}
-The first term of the last row is weakly lower semicontinuous in $H^1(\Omega)$ since the integrand is convex and continuous; the last term is constant. For the second term we have shown weak continuity in \cref{technicalLemma}. Thus we have shown, that $\mathcal{E}_n$ is weakly-$H^1$ lower semicontinuous.\\
+The first term of the last row is weakly lower semicontinuous in $H^1(\Omega)$ since the integrand is continuous and convex, \cref{thm:Tonelli}; the last term is constant. For the second term we have shown weak continuity in \cref{technicalLemma}. Thus we have shown, that $\mathcal{E}_n$ is weakly-$H^1$ lower semicontinuous.\\
 Lets now consider the integral involving $\mathcal{B}^-$ in $\mathcal E_{bd}$; the term $\mathcal B^+$ can then be treated similarly. By Rellichs theorem, we can assume that, up to a subsequence, $\phi_i \rightarrow\phi$ pointwise almost everywhere. Further notice, that the scalar function $f(t) := \chi_{(-\infty, 0)}(t)$ is lower semicontinuous, and $f(t) \geq 0$. Using Fatou's lemma we conclude: $$\int_\Omega  \chi_{\{\phi > 0\}}  \,\mathrm{dx} \overset{\text{lsc.}}{\leq} \int_\Omega \liminf_i  \chi_{\{\phi_i > 0\}}  \,\mathrm{dx} \overset{\text{Fatou}}{\leq} \liminf_i\int_\Omega  \chi_{\{\phi_i > 0]\}}  \,\mathrm{dx}.$$ This shows weak lower semicontinuity of $\mathcal{E}_{bd}$ in $H^1(\Omega)$ and thus for the whole functional $\mathcal{E}_{SDF}.$\par
 \textbf{Coercivity:} We want to use the fact that 
 $$
@@ -492,7 +491,7 @@ We further propose an additional loss term, which, being a direct consequence of
 \begin{align}\label{loss_Hess}
     \mathcal{E}_{Hess}({\phi}) :&=   \int_\Omega \big|\det(D^2 \phi(x))\big| \,\mathrm{dx} + \epsilon_{Hess}\, \|\phi\|_{W^{2,p}}^p  .
 \end{align}
-Here, $D^2 \phi$ denotes the Hessian matrix of $\phi$, $\det$ is the determinant and $\epsilon_{Hess} > 0$. Further, we denote by \( W^{2,p}(\Omega) \) the Sobolev space of $p$-integrable functions, with first and second weak derivatives also \( p \)-integrable. The associated norm is denoted by \( \|\cdot\|_{W^{2,p}} \), $$\|\phi\|^p_{W^{2,p}} :=\int_\Omega |\phi|^p + \|\nabla \phi\|^p + \left( \sum_{i=1}^d \| \partial_i \nabla u(x) \|^2 \right)^{p/2} \, \mathrm{dx}.$$
+Here, $D^2 \phi$ denotes the Hessian matrix of $\phi$, $\det$ is the determinant and $\epsilon_{Hess} > 0$. Further, we denote by \( W^{2,p}(\Omega) \) the Sobolev space of $p$-integrable functions, with first and second weak derivatives also \( p \)-integrable. The associated norm is denoted by \( \|\cdot\|_{W^{2,p}} \): $$\|\phi\|^p_{W^{2,p}} :=\int_\Omega |\phi|^p + \|\nabla \phi\|^p + \left( \sum_{i=1}^d \| \partial_i \nabla u(x) \|^2 \right)^{p/2} \, \mathrm{dx}.$$
 
 We end this section by showing that the Hessian term can be added to the general SDF loss without affecting well-posedness of the problem.
 \begin{theorem}{\textbf{(Existence of minimizers - Singular Hessian:)}}
@@ -503,7 +502,7 @@ is weakly lower semicontinuous wrt. $W^{2,p}$, $p\geq 3$ and coercive.
     \textbf{Weak lower semicontinuity:} 
     As in the general theory of the calculus of variations, a function \(f: \mathbb{R}^{n \times n} \to \mathbb{R}, F \mapsto f(F)\) is called \emph{polyconvex} if it can be written as a convex function of all minors of the matrix \(F\).
 
-The determinant \(\det(F)\) is a homogeneous polynomial of degree \(n\) in the entries of \(F\), and hence is polyconvex. Moreover, the function \(F \mapsto -\det(F)\) is also polyconvex, since scalar multiplication preserves polyconvexity.
+The determinant \(\det(F)\) is a homogeneous polynomial of degree \(n\) in the entries of \(F\), and hence polyconvex. Moreover, the function \(F \mapsto -\det(F)\) is also polyconvex, since scalar multiplication preserves polyconvexity.
 
 Then,
 \[
@@ -1079,7 +1078,7 @@ We also aim to improve the proposed narrow-band framework to make it usable for 
 Beyond these topics, some more general questions remain. For example, the use of more advanced network architectures, such as ResNet (\cite{he2015deepresiduallearningimage}) appears promising for improving approximation quality. Additionally, it remains unclear whether an experimental convergence behavior can be established for the proposed methods.
 \endgroup
 \bibliography{references.bib}
-\appendix
+\appendix\label{appendix}
 \chapter{Theoretical Background}
 The following appendix contains supplementary proofs and theoretical results used but not proven in the main text.
 \begin{proof}[Proof of \cref{technicalLemma}]
