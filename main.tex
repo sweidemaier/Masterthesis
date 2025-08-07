@@ -1,4 +1,4 @@
-\documentclass[draft,12pt,openany]{book}
+\documentclass[12pt,openany]{book}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage[babel=true]{csquotes}
@@ -154,7 +154,7 @@ Finally, I am deeply grateful to my family and my girlfriend for their constant 
 \end{figure}
 This thesis proposes a novel approach to numerically approximate signed distance functions (SDFs) from unoriented point clouds using neural networks. In a second step, we utilize these neural SDFs to solve geometric partial differential equations (PDEs) using a neural narrow-band approach.\par
 After revisiting the basic concepts from the calculus of variations, differential geometry, and neural networks (\Cref{ch:prelim}), we turn our attention towards the computation of SDFs using a variational heat-based ansatz (\Cref{SectionNeuralImplicitSurf}). To this end, we replace the commonly used Eikonal equation ($\|\nabla \phi\| = 1$) with the heat method, carrying over to a neural setting what has long been standard practice for computing distances on discrete surfaces. This approach requires first the neural approximation of the unsigned gradients through a small time step of the heat equation. Using a second neural network, we then orient the gradient directions and fix the zero-level set to approximate the SDF. We show that both minimization problems are well-posed. This approach is based on concepts developed in joint work, as published in \cite{weidemaier2025sdfsunorientedpointclouds}. Furthermore, we present novel ideas on how to adapt and improve this method. Through numerical experiments, we demonstrate that our method provides state-of-the-art surface reconstruction and consistent SDF gradients.\par
-The second part of the thesis presents, to our knowledge, a new framework for neural geometric PDEs (\Cref{NPDEsonSurfaces}), which extends the classical narrow-band method, used for example in combination with geometric finite elements and difference methods, to a neural setting. In various examples, we demonstrate that our SDF approach in combination with the neural narrow-band method is accurate enough to solve PDEs on the zero-level set.
+The second part of the thesis presents, to our knowledge, a new framework for neural geometric PDEs, a class of PDEs in which the solution is governed by intrinsic geometric properties of the domain (\Cref{NPDEsonSurfaces}); for this, we extend the classical narrow-band method, used for example in combination with geometric finite elements and difference methods, to a neural setting. In various examples, we demonstrate that our SDF approach in combination with the neural narrow-band method is accurate enough to solve PDEs on the zero-level set.
 
 \newpage
 \pagenumbering{arabic}
@@ -181,10 +181,15 @@ Let X be a real Banach space with norm $\|\cdot\|_X$, and let $I: X\rightarrow\R
 \end{itemize}
     
 \end{definition}
-Since the proof of Weierstrass’s theorem is straightforward, we include it here for completeness.\begin{proof}{(Weierstrass)}
-    $I$ is bounded below, hence $c:= \inf_u I(u) \in \R$ and hence we find a sequence $\{u_n\}_{n\in\mathbb{N}}$, such that $I(u_n)\rightarrow c$. Since I is coercive, this directly implies that the sequence $\{u_n\}_{n\in\mathbb{N}}$ is bounded in $X$. Further, $X$ is reflexive; thus, the sequence admits a weakly convergent subsequence: $$u_{\hat{n}} \rightharpoonup u$$
-    Since I is assumed to be weakly lower semicontinuous, this concludes the proof. 
-\end{proof}
+\begin{lemma}\label{thm:Tonelli}\textbf{(Tonelli:)}
+    Let $\Omega \in \R^n$ and $F:\R^m\rightarrow\R^{\pm\infty}$ be continuous. Then the integral functional $$u \mapsto \int_\Omega F(u(x))\,\mathrm{dx}$$
+    is weakly lower semicontinuous in $L^p$ ,$1<p<\infty$, if and only if $F$ is convex.
+\end{lemma}
+
+%Since the proof of Weierstrass’s theorem is straightforward, we include it here for completeness.\begin{proof}{(Weierstrass)}
+    %$I$ is bounded below, hence $c:= \inf_u I(u) \in \R$ and hence we find a sequence $\{u_n\}_{n\in\mathbb{N}}$, such that $I(u_n)\rightarrow c$. Since I is coercive, this directly implies that the sequence $\{u_n\}_{n\in\mathbb{N}}$ is bounded in $X$. Further, $X$ is reflexive; thus, the sequence admits a weakly convergent subsequence: $$u_{\hat{n}} \rightharpoonup u$$
+   % Since I is assumed to be weakly lower semicontinuous, this concludes the proof. 
+%\end{proof}
 \begin{definition}\textbf{(Gateaux differentiable:)}
     Let $X$ be a real Banach space and let \mbox{$I: X\rightarrow\R$} be a map. Then I is called \emph{Gateaux differentiable} at $u\in X$, if $\forall w\in X$ the map $$\tau \mapsto I(u + \tau w)$$ is differentiable at $\tau = 0$.
 \end{definition}
@@ -217,13 +222,13 @@ Now that we have introduced the notion of a neural network, let us exploit the t
 $$ where $\Omega \subset \R^n $ is bounded, one typically makes the ansatz \begin{align*}
     \min_u I(u)\text{, where } I(u) := \int_\Omega \frac{1}{2} \|\nabla u\|^2 - fu \,\mathrm{dx} + \lambda\int_{\partial \Omega} (u(x)- g(x))^2\, \mathrm{da},\quad(\star)
 \end{align*}
-where $u(x) = \mathcal N_\theta(x)$ for some set of trainable parameters $\theta$, $\lambda\in \R^+$. One then seeks to approximate a minimizer typically using stochastic gradient descent. Minimizers of $(\star)$ are to weak solutions of $(\triangle)$, which can be seen by considering the Euler-Lagrange equation. We prefer this approach over other neural PDE methods, since existence of minimizers of functionals $I(u)$ can often be shown using the methods of variational calculus. Note, that here and in the following $\|\cdot\|$ denotes the vector norm in $\R^3$ and $\R^+$ are the positive real numbers.\\
+where $u(x) = \mathcal N_\theta(x)$ for some set of trainable parameters $\theta$, $\lambda\in \R^+$. One then seeks to approximate a minimizer typically using stochastic gradient descent. Minimizers of $(\star)$ are to weak solutions of $(\triangle)$, which can be seen by considering the Euler-Lagrange equation. We prefer this approach over other neural PDE methods, since existence of minimizers of functionals $I(u)$ can often be shown using the methods of variational calculus. Note that here and in the following $\|\cdot\|$ denotes the vector norm in $\R^3$ and $\R^+$ are the positive real numbers.\\
 The more convenient alternative to the Deep Ritz method is often referred to as a \emph{Physics Informed Neural Network} (PINN), \cite{RAISSI2019686}. PINNs minimize the squared residual of the respective PDE, for example, in the case of Poisson's equation:
 $$ \min_u I_{PINN}(u)\text{, where } I_{PINN}(u) := \int_\Omega |\Delta u + f|^2 \,\mathrm{dx}\, +\, \lambda \int_{\partial\Omega}(u(x) - g(x))^2 \, \mathrm{da}  .$$
 Both the Deep Ritz method and PINNs demonstrate comparable approximation quality in practice and no significant empirical advantage has been consistently observed for a variety of problems for one method over the other, \cite{yang2025numericalstudyhyperparameter}. 
 We here want to point out that the PINN framework requires the computation of higher-order derivatives, which leads to increased computational effort. Furthermore, the PINN approach is in general numerically more unstable.
 \section{Differential Geometry}
-Within this section, we define the notion of a signed distance function in $\R^3$ and elaborate on the key properties. Afterwards, we will recall the definitions of differential operators on implicit surfaces. Note, that most of the following results generalize naturally to $\R^n$. However, since the focus of this thesis are surfaces embedded in $\R^3$, we restrict the following theoretical framework to the case $n=3$.\\
+Within this section, we define the notion of a signed distance function in $\R^3$ and elaborate on the key properties. Afterwards, we will recall the definitions of differential operators on implicit surfaces. Note that most of the following results generalize naturally to $\R^n$. However, since the focus of this thesis are surfaces embedded in $\R^3$, we restrict the following theoretical framework to the case $n=3$.\\
 For a more general introduction to differential geometry, see, for example, \cite{Lee00}, or, more specifically for implicit manifolds, \cite{Dziuk_Elliott_2013}. Regarding the theory on geodesics, we refer to \cite{Dacorogna}.
 \begin{definition}\textbf{(Manifolds and embedded surfaces:)}
 A \emph{smooth manifold} \(\mathcal{M}\) of dimension \(n\) is a topological space in which every point \(p \in \mathcal{M}\) has a neighborhood that can be continuously and invertibly mapped to an open subset of \(\mathbb{R}^n\), with the additional requirement that the transition functions between overlapping neighborhoods, when expressed in \(\mathbb{R}^n\), are smooth.\par
@@ -263,13 +268,13 @@ $\mathrm{sign}(\phi(x)) = - \mathrm{sign}(\phi (y))$ for all $x$ inside and $y$ 
     Let $\phi$ be an SDF. Then $\phi$ admits the following properties:
     \begin{itemize}
         \item \emph{Eikonal property}:  $\|\nabla \phi\| = 1 $ a.e. in $\R^3$ 
-        \item \emph{Singular-Hessian property:}  the determinand of the Hessian of $\phi$ is singular, i.e.,  $D^2 \phi$ has a zero eigenvalue:
+        \item \emph{Singular-Hessian property:} assume that $D^2\phi$ exists a.e.; then the determinant of the Hessian of $\phi$ is singular, i.e.,  $D^2 \phi$ has a zero eigenvalue:
         $$D^2 \phi \cdot\nabla \phi = 0$$
     
     \end{itemize}
 \end{lemma}
 \begin{proof}
-    The first property follows directly from the definition using the linearity and growth of $\mathrm{d}(\,\cdot\,, \S)$. To show the second property, we first recall that {$\det(M) = 0 \Leftrightarrow M\in\R^{3\times3}$} has a zero eigenvalue. By differentiating the squared Eikonal equation we obtain
+    One can directly verify that \( \phi \) is 1-Lipschitz, and thus differentiable almost everywhere by the well-known Rademacher's Theorem. The Eikonal property \( \|\nabla \phi\| = 1 \) then follows from the fact that \( \phi \) increases at unit speed in the direction normal to its level sets. To show the second property, we first recall that {$\det(M) = 0 \Leftrightarrow M\in\R^{3\times3}$} has a zero eigenvalue. By differentiating the squared Eikonal equation we obtain
     \begin{align*}
         0 &= \nabla(\|\nabla \phi\|^2)\\
         &= \nabla ( \nabla \phi \cdot \nabla\phi)\\
@@ -301,7 +306,7 @@ Similarly, for a vector field \(v : \mathcal{U}(\mathcal{M}_c) \to \mathbb{R}^{d
 \[
 \operatorname{div}_{\mathcal{M}_c} v :=  (P \nabla_{\mathbb{R}^{d+1}}) \cdot v.
 \]
-(Note, that the validity of this definition for the manifold divergence follows from the subsequent lemma.)
+(Note that the validity of this definition for the manifold divergence follows from the subsequent lemma.)
 \end{definition}
 \begin{lemma}\textbf{(Duality of $\nabla_\mathcal{M}$ and $\operatorname{div}_\mathcal{M}$:)}
     Let 
@@ -457,13 +462,13 @@ We will give the proof of this lemma in the appendix.
 \begin{theorem}\label{ProofExSDF}\textbf{(Existence of minimizers - SDF:)} 
 Suppose that $n_\tau$ is measurable and the Borel sets $\mathcal{B}^{\pm}\subset \Omega$ are given. Then the SDF functional $\mathcal{E}_{SDF}$ is weakly lower semicontinuous and coercive with respect to the $H^1$-topology and thus admits a minimizer. 
 \end{theorem}\begin{proof} \textbf{Weak lower semicontinuity:}
-Let $\phi_i, \phi \in H^1(\Omega)$ and let $\phi_i \xrightharpoonup{H^1(\Omega)}\phi$. Then by the trace theorem $$\phi_n \rightharpoonup\phi \text{ in }H^1(\Omega) \Rightarrow \phi_n \rightharpoonup\phi \text{ in }L^2(\S).$$
+Let $\phi_i, \phi \in H^1(\Omega)$ and let $\phi_i \xrightharpoonup{H^1(\Omega)}\phi$. Then by the trace theorem $$\phi_i \rightharpoonup\phi \text{ in }H^1(\Omega) \Rightarrow \phi_i \rightharpoonup\phi \text{ in }L^2(\S).$$
 This shows weak continuity of the term $\mathcal{E}_{surf}$. Regarding the normal loss $\mathcal{E}_n$, we observe that \begin{align*}
     \mathcal{E}_n(\phi) :&= \int_\Omega \chi_{\{\phi < 0\}} \|\nabla \phi + n_\tau\|^2 \,\mathrm{dx} + \chi_{\{\phi \geq 0\}} \|\nabla \phi - n_\tau\|^2 \,\mathrm{dx}\\&= \int_\Omega \|\text{sign}(\phi) \nabla \phi - n^\tau\|^ 2\,\mathrm{dx}\\
     & =\int_\Omega \|\nabla \phi\|^2  -2 \text{ sign} (\phi) \nabla \phi \cdot n^\tau  + \|n^\tau\|^2 \,\mathrm{dx} \quad \text{(binomial theorem)}\\
     &= \int_\Omega \|\nabla \phi\|^2  -2 \nabla |\phi| \cdot n^\tau  + 1 \,\mathrm{dx} \quad \text{(chain rule)}
 \end{align*}
-The first term of the last row is weakly lower semicontinuous by Hahn-Banach; the last term is constant. For the second term we have shown weak continuity in \cref{technicalLemma}. Thus we have shown, that $\mathcal{E}_n$ is weakly-$H^1$ lower semicontinuous.\\
+The first term of the last row is weakly lower semicontinuous in $H^1(\Omega)$ since the integrand is convex and continuous; the last term is constant. For the second term we have shown weak continuity in \cref{technicalLemma}. Thus we have shown, that $\mathcal{E}_n$ is weakly-$H^1$ lower semicontinuous.\\
 Lets now consider the integral involving $\mathcal{B}^-$ in $\mathcal E_{bd}$; the term $\mathcal B^+$ can then be treated similarly. By Rellichs theorem, we can assume that, up to a subsequence, $\phi_i \rightarrow\phi$ pointwise almost everywhere. Further notice, that the scalar function $f(t) := \chi_{(-\infty, 0)}(t)$ is lower semicontinuous, and $f(t) \geq 0$. Using Fatou's lemma we conclude: $$\int_\Omega  \chi_{\{\phi > 0\}}  \,\mathrm{dx} \overset{\text{lsc.}}{\leq} \int_\Omega \liminf_i  \chi_{\{\phi_i > 0\}}  \,\mathrm{dx} \overset{\text{Fatou}}{\leq} \liminf_i\int_\Omega  \chi_{\{\phi_i > 0]\}}  \,\mathrm{dx}.$$ This shows weak lower semicontinuity of $\mathcal{E}_{bd}$ in $H^1(\Omega)$ and thus for the whole functional $\mathcal{E}_{SDF}.$\par
 \textbf{Coercivity:} We want to use the fact that 
 $$
@@ -476,7 +481,7 @@ Suppose for now that ($\star$) holds, then let $a = \nabla |\phi|, b = n^\tau$:
  &\leq 2 \lambda_2\int_\Omega \| \nabla |\phi| - n^\tau\|^2 
  + 1 \,\mathrm{dx}+ \lambda_1 \|\phi\| ^2_{L^2(\S)} + \lambda_3 \mathcal{E}_{bd}
 \end{align*} 
-The left side of the equation defines a norm equivalent to the $H^1$ norm. This can be seen as follows: the first bound is clearly true by the trace theorem. The other bound follows by the following generalized Poincar\'e inequality: $$\|u\|^2_{L^2(\Omega)} \leq C( \|\nabla u\|^2_{L^2(\Omega)} +  \|u\|^2_{L^2(\mathcal{\S})})$$
+The left side of the equation defines a norm equivalent to the $H^1$ norm. This can be seen as follows: the first bound is clearly true by the trace theorem. The other bound follows by the following generalized Poincar\'e inequality: $$\|u\|^2_{L^2(\Omega)} \leq C\Big( \|\nabla u\|^2_{L^2(\Omega)} +  \|u\|^2_{L^2(\mathcal{\S})}\Big).$$
 This inequality can be easily proven by contradiction: Suppose the inequality is false, then there are $\{u_n\}_{n\in\mathbb N}$, such that $\|u_n\|_{L^2(\Omega)} = 1$, $n\|\nabla u_n\|^2_{L^2(\Omega)} +  n\|u_n\|^2_{L^2(\mathcal{\S})} \leq 1$. Thus, $\|\nabla u_n\|_{L^2(\Omega)} \leq \frac{1}{n}$ and hence $u_n$ is bounded in $H^1$. Up to a subsequence $u_n \xrightharpoonup{H^1}u$ for some $u\in H^1(\Omega)$, especially $u_n \xrightarrow{L^2(\Omega)}u$. Since $\|\nabla u_n\|_{L^2(\Omega)} \rightarrow 0$, $u$ is constant and nonzero ($\|u\|_{L^2(\Omega)} = 1$). On the other hand, since the trace operator is continuous, $\frac{1}{n} \geq \|u_n\|_{L^2(\S)} \rightarrow 0 $. Contradiction.\\
 We are still left to show ($\star$); if $a=b$ there is nothing to show. If $a> b$, then $2(a-b)^2  + 2b^2 = 2a^2 + 4b^2 - 4ab > 2a^2 +4b^2 - 4b^2 = 2a^2 $. Finally, if $a<b$, then $2a^2 - 2b^2 - 4ab > 0$ and $a^2 < 2b^2$.\\
 Thus, we have shown coercivity.
@@ -495,14 +500,49 @@ For any $\epsilon_{Hess} > 0$ we have that $$ \mathcal E_{Hess}(\phi) := \int_\O
 is weakly lower semicontinuous wrt. $W^{2,p}$, $p\geq 3$ and coercive.
 \end{theorem} 
 \begin{proof}
-    \textbf{Weak lower semicontinuity:} Let $\phi_i \xrightharpoonup{W^{2,p}} \phi$ and let $p \geq 3$; note that in this case $\det(D^2\phi_{(i)}) \in L^{p/3}(\Omega)$ is well-defined, since we have two weak derivatives and $\det(\cdot)$ is a polynomial of order 3. Especially, we can assume that $\det(D^2\phi) \leq C < \infty$. \\ 
-    The term multiplied by $\epsilon_{Hess}$ is weakly lower semicontinuous by the Hahn-Banach theorem.\\
-    We can rewrite the determinant in terms of the adjugate matrix:
-    $$\det(A) \cdot \mathbb I = A\cdot \,\mathrm{adj}(A), \quad A\in\R^{n\times n}.$$
-    Since $\mathrm{adj}(D^2\phi)$ is bounded in $L^{p/2}$ we have  $$\mathrm{adj}(D^2 \phi_i) \xrightharpoonup{L^{p/2}}\mathrm{adj}(D^2 \phi). $$
-    Thus, the determinant is the product of a weakly convergent sequence ($\mathrm{adj}$) and a strongly convergent sequence ($D^2\phi$), both in $L^{p/2}$. The product is therefore weakly convergent. This concludes the proof of weak lower semicontinuity. \\
-    Furthermore, the term is \textbf{coercive} in $W^{2,p}$, since it involves the $W^{2,p}$-norm and the term $|\det(D^2\phi)|\geq 0$. This concludes the proof.
-    
+    \textbf{Weak lower semicontinuity:} 
+    As in the general theory of the calculus of variations, a function \(f: \mathbb{R}^{n \times n} \to \mathbb{R}, F \mapsto f(F)\) is called \emph{polyconvex} if it can be written as a convex function of all minors of the matrix \(F\).
+
+The determinant \(\det(F)\) is a homogeneous polynomial of degree \(n\) in the entries of \(F\), and hence is polyconvex. Moreover, the function \(F \mapsto -\det(F)\) is also polyconvex, since scalar multiplication preserves polyconvexity.
+
+Then,
+\[
+|\det(F)| = \max\{ \det(F), -\det(F) \}
+\]
+is the pointwise maximum of two polyconvex functions, and polyconvexity is closed under taking finite pointwise maxima. Therefore, \(F \mapsto |\det(F)|\) is polyconvex and thus especially quasiconvex.
+
+Since \(|\det(F)| \leq C (|F|^3+1)\) and furthermore the composition \(x \mapsto |\det(D^2 \phi(x))|\) defines a polyconvex integrand and \(\phi_i \xrightharpoonup{W^{2,p}} \phi\) implies weak convergence of \(D^2 \phi_i\) in \(L^p\), the standard theory (see again \cite{Dacorogna}) implies that the functional
+\[
+\phi \mapsto \int_\Omega |\det(D^2 \phi(x))|\, dx
+\]
+is weakly lower semicontinuous.
+%Let $\phi_i \xrightharpoonup{W^{2,p}} \phi$ and let $p \geq 3$; note that in this case $\det(D^2\phi_{(i)}) \in L^{p/3}(\Omega)$ is well-defined, since we have two weak derivatives and $\det(\cdot)$ is a polynomial of order 3. Especially, we can assume that $\det(D^2\phi) \leq C < \infty$. \\ 
+    %The term multiplied by $\epsilon_{Hess}$ is weakly lower semicontinuous by the Hahn-Banach theorem.\\
+    %We can rewrite the determinant in terms of the adjugate matrix:
+    %$$\det(A) \cdot \mathbb I = A\cdot \,\mathrm{adj}(A), \quad A\in\R^{n\times n}.$$
+    %Since $\mathrm{adj}(D^2\phi)$ is bounded in $L^{p/2}$ we have  $$\mathrm{adj}(D^2 \phi_i) \xrightharpoonup{L^{p/2}}\mathrm{adj}(D^2 \phi). $$
+    %Thus, the determinant is the product of a weakly convergent sequence ($\mathrm{adj}$) and a strongly convergent sequence ($D^2\phi$), both in $L^{p/2}$. The product is therefore weakly convergent. This concludes the proof of weak lower semicontinuity. \\
+    %Let $\phi_i \rightharpoonup \phi$ in $W^{2,p}(\Omega)$ with $p \geq 3$. Then the sequence $\{ \phi_i \}$ is uniformly bounded in $W^{2,p}$ by the Banach–Alaoglu theorem.
+
+%Note that $\det(D^2\phi_i)$ is well-defined in $L^{p/3}(\Omega)$, since $\det$ is a degree‑3 polynomial in the second derivatives, and $D^2 \phi_i \in L^p$. Furthermore, the mapping
+%\[
+%D^2\phi \mapsto |\det(D^2\phi)|
+%\]
+%is **polyconvex**, and hence **weakly lower semicontinuous** under weak convergence in $W^{2,p}$ (see e.g. Dacorogna, *Direct Methods in the Calculus of Variations*, or Benešová–Kružík, 2016). Therefore,
+%\[
+%\int_\Omega |\det(D^2\phi)| \,\mathrm{d}x \leq \liminf_{i %\to \infty} \int_\Omega |\det(D^2\phi_i)| \,\mathrm{d}x.
+%\]
+
+%The second term, $\epsilon_{Hess} \|\phi\|_{W^{2,p}}^p$, is weakly lower semicontinuous by convexity and norm continuity in reflexive Banach spaces.
+
+%Hence, the full functional $\mathcal E_{Hess}(\phi)$ is weakly lower semicontinuous in $W^{2,p}(\Omega)$.
+    \textbf{Coercivity:}  
+    The functional \(\mathcal{E}_{Hess}(\phi)\) is coercive on \(W^{2,p}(\Omega)\) because the regularization term \(\epsilon_{Hess} \|\phi\|_{W^{2,p}}^p\) dominates the growth of the functional. Specifically, since \(|\det(D^2\phi)| \geq 0\), we have
+    \[
+    \mathcal{E}_{Hess}(\phi) \geq \epsilon_{Hess} \|\phi\|_{W^{2,p}}^p,
+    \]
+    and thus \(\mathcal{E}_{Hess}(\phi) \to \infty\) as \(\|\phi\|_{W^{2,p}} \to \infty\). This ensures coercivity of \(\mathcal{E}_{Hess}\) with respect to the \(W^{2,p}\)-norm.\\
+    This concludes the proof.
 \end{proof}
 \subsection{Practical Implementation}\label{practicalImplememntation}
 \paragraph{Network architecture and optimizer setting:} We implement our method using the PyTorch framework. For both the heat and SDF step, we are using 4 hidden layers of width 256 and SIREN (\cite{sitzmann2020implicitneuralrepresentationsperiodic}) activation functions. For optimization, we use the Adam optimizer (\cite{kingma2017adammethodstochasticoptimization}). Starting with a learning rate of $10^{-4}$, we decrease up to a minimum of $10^{-8}$ using the PyTorch ReduceLRonPlateau function. For the heat step, we train for a total of 50 epochs, each consisting of 500 batches, and for the SDF step, for 50 epochs, each consisting of 1000 batches. For both steps, we use a constant batch size of 5000. Additionally, for the SDF step, we initialize our network with the approximation of the unit sphere. \\
@@ -544,7 +584,7 @@ For a visual comparison between uniform and adaptive weights, see \cref{heatweig
 To ensure that the minimization process yields an SDF rather than an \emph{unsigned} distance function, we approximate the sets $\mathcal{B}^+$ outside and $\mathcal{B}^-$ inside the surface $\mathcal{S}$ using the following simple algorithm.
 \begin{algorithm}\textbf{(Box-grid algorithm:)}\label{box_algorithm}
 \begin{enumerate}
-    \item Consider $\alpha \in \mathbb{Z}^3\cap\Omega$ and let $h\alpha $ be the cell midpoints of a rectangular grid with edge length $h > 0$. Iteratively mark all cells that contain at least one input point $x_i^\S$; these cells will be referred to as \emph{occupied cells}.
+    \item Consider $\alpha \in \mathbb{Z}^3\cap\Omega$ and let $h\alpha $ be the cell midpoints of a rectangular grid with edge length $h > 0$. Iteratively mark all cells that contain at least one input point $x_i^\S$; these cells will be referred to as \emph{occupied cells}. In practice, we use $h = 64$ as the standard setting. For sparse input data, however, we recommend using smaller values, e.g. $h = 48$.
     \item By marking all direct neighbors of the occupied cells, we dilate the occupied region once. This introduces a safety distance between inside and outside regions and will be helpful later. For simplicity, we will here refer to the union of dilated and occupied cells as \emph{occupied region}. We will later use the occupied region to derive an effective sampling algorithm in \ref{clever_sampling}.
     \item Next, starting with a cell that touches the boundary of $\Omega$ and is not in the occupied region, mark all neighbor cells that have not already been marked as \emph{exterior cells}. These cells define the set $\mathcal{B}^+_h$.
     \item Finally, all cells that have not yet been marked will be marked as \emph{interior cells}, i.e., those defining the set $\mathcal{B}_h^-$.
@@ -604,7 +644,7 @@ We apply the same strategy to the boundary functional:
     \mathcal{E}_{bd}(\phi) \approx \int_\mathcal{B^+} \eta_\delta(\phi) \,\mathrm{dx} + \int_{\mathcal{B^-}}(1-\eta_\delta(\phi)) \,\mathrm{dx},
 \end{equation}
 and denote its discrete counterpart by $\mathcal{L}_{bd}$.\\
-Note, that in fact, $\forall \delta < h$, where $h$ denotes the edge length of the boxes, and $\mathcal{B}_h^{\pm}$ are the box regions obtained using \cref{box_algorithm}, and for an SDF $\phi$ equality holds in \cref{eq:bd_functional}:
+Note that in fact, $\forall \delta < h$, where $h$ denotes the edge length of the boxes, and $\mathcal{B}_h^{\pm}$ are the box regions obtained using \cref{box_algorithm}, and for an SDF $\phi$ equality holds in \cref{eq:bd_functional}:
  $$\int_{\mathcal B^-}\chi_{\{\phi < 0\}}\,\mathrm{dx} + \int_{\mathcal B^+}\chi_{\{\phi > 0\}} \,\mathrm{dx} = \int_{\mathcal{B}^{-}_h} \eta_\delta(\phi) \,\mathrm{dx} + \int_{\mathcal{B}^{+}_h}(1-\eta_\delta(\phi)) \,\mathrm{dx}.$$
 This is due to the safety distance we introduced in step (ii) of \cref{box_algorithm}. 
 \paragraph{SDF step - Farfield:}
@@ -640,7 +680,7 @@ As a default setting, we choose $\lambda_1 = 100, \,\lambda_2 = 1, \,\lambda_3 =
 \paragraph{NeatSDF:} Furthermore, we can define an improved version, called \emph{NeatSDF}. NeatSDF approximates the SDF inside a narrow band region $D$, such that $\S\subsetneq D\subsetneq\Omega$, using the sampling strategy defined in \cref{clever_sampling}. In addition to the standard loss terms $\mathcal{L}_{surf}, \mathcal L_{n}$, and $\mathcal{L}_{bd}$, we add the singular Hessian term 
 $$ \mathcal L_{Hess}(\phi) := \int_\Omega |\det(D^2 \phi(x))| \,\mathrm{dx} + \epsilon_{Hess} \|\phi \|_{W^{2,p}}^p $$ The regularization of the Hessian term in normal direction allows us to slightly adapt the normal loss:
 $$\tilde{\mathcal{E}}_{n}(\phi)= \int_D \min(\|\nabla \phi + n\|^2,\|\nabla \phi - n\|^2) \,\mathrm{dx}.$$
-Note, that $\tilde{\mathcal{E}}_n$ is not weakly lower semicontinuous. To recover lower semicontinuity, one could approximate the $\min(\cdot,\cdot)$ by a smooth function $$\min(\epsilon;a,b) := \frac{a + b}{2} - \frac{1}{2}\sqrt{(a-b)^2 + \epsilon} \xrightarrow[]{\epsilon \rightarrow0} \min(a,b).$$ Then $\forall\,\epsilon> 0$ the functional $\tilde {\mathcal E}_n$ including $\min(\epsilon; \,,\,)$ is weakly lower semicontinuous. We omit the proof here and refer to the Appendix (\Cref{min_lsc}). Since our experiments did not indicate any convergence issues, we retain the $\min$ operator in practice.\\ 
+Note that $\tilde{\mathcal{E}}_n$ is not weakly lower semicontinuous. To recover lower semicontinuity, one could approximate the $\min(\cdot,\cdot)$ by a smooth function $$\min(\epsilon;a,b) := \frac{a + b}{2} - \frac{1}{2}\sqrt{(a-b)^2 + \epsilon} \xrightarrow[]{\epsilon \rightarrow0} \min(a,b).$$ Then $\forall\,\epsilon> 0$ the functional $\tilde {\mathcal E}_n$ including $\min(\epsilon; \,,\,)$ is weakly lower semicontinuous. We omit the proof here and refer to the Appendix (\Cref{min_lsc}). Since our experiments did not indicate any convergence issues, we retain the $\min$ operator in practice.\\ 
 The overall loss function for the NeatSDF method reads \begin{align}
     &\mathcal{L}_{NeatSDF}(\phi) := \lambda_1\, \mathcal{L}_{surf}(\phi) + \lambda _2\,\hat{\mathcal{L}}_{n}(\phi) + \lambda_3\,\mathcal{L}_{bd}(\phi) + \lambda_4\, \mathcal{L}_{Hess}\notag\\
     &\quad =\frac{\lambda_1}{N_{pt}}\sum_i^{N_{pt}}\phi\big( x_i^\S\big)^2
@@ -649,7 +689,7 @@ The overall loss function for the NeatSDF method reads \begin{align}
 &\quad +\lambda_4\, \sum_j^{N_{bs}}|\det\big( D^2 \phi(x_j)\big)| + \epsilon_{Hess}\Big[\,|\phi|^p + \|\nabla \phi\|^p + \left( \sum_{i=1}^d \| \partial_i \nabla \phi \|^2 \right)^{p/2} \,\Big](x_j) 
 \end{align} 
 As a default parameter setting, we use $\lambda_ 1 = 10^5, \,\lambda_2 = 10, \,\lambda_3 = 100, \,\lambda_4 = 10^{-6}$, which has proven to be a good trade-off between highly accurate surface reconstruction and reliable SDF gradients. The method is stable with respect to variations in the parameter settings.\par
-Note, that other combinations of the functionals are possible. For example, one could use the NeatSDF method with the farfield approach or use the HeatSDF method with near-surface sampling described in \cref{clever_sampling}. 
+Note that other combinations of the functionals are possible. For example, one could use the NeatSDF method with the farfield approach or use the HeatSDF method with near-surface sampling described in \cref{clever_sampling}. 
 \section{Experiments and Comparison}\label{Comps}
 The theoretical framework presented above is directly adaptable to work in dimension $n=2$, see, for example, the results in \cref{heatweights,farfield_comp}. In the following, we restrict our attention to examples based on three-dimensional point clouds, as this case is more challenging to compute, and thus provides a more rigorous test of the methods. Building on the theory presented above, we defined two loss functionals in \cref{ch:methodsummary}, whose minimizers are SDFs corresponding to the input surface. We compare these approaches with the following state-of-the-art methods; note that to improve readability, we do not explicitly include the scaling factors between the loss terms:
 \paragraph{SALD, \cite{SALD}:} This approach extends the original \emph{Sign Agnostic Learning (SAL)} framework, \cite{SAL}, by incorporating derivatives into the loss functional. SAL learns an SDF from unoriented input data via a loss functional that compares discrete point-wise distances up to unknown sign
@@ -917,7 +957,7 @@ Again, the problem is well-defined without boundary conditions in space since we
 We reformulate the PDE as a time-discrete variational problem:
 \begin{align}\label{geometric_heat_eq}
     w^{1} := \argmin_{w\in H^1(D)}\int_D (w - w^0)^2 + \tau \|\nabla_{\mathcal{M}}w\|^2 \,\mathrm{dx}
-\end{align} for $\tau > 0 $, and solve in time, by iteratively using the solution from the previous step as initial data. Then $w^k$ denotes the approximation of the PDE solution at time $k\tau$, i.e., $w^k(\,\cdot\,) \approx w(k\,\tau, \,\cdot\,)$. Note, that \cref{geometric_heat_eq} follows from \cref{eq:heatflow}, by approximating the time derivative via the implicit Euler scheme:  $$\partial_t w(k\tau, x) \approx \frac{w((k+1)\tau, x) - w(k\tau, x)}{\tau}. $$
+\end{align} for $\tau > 0 $, and solve in time, by iteratively using the solution from the previous step as initial data. Then $w^k$ denotes the approximation of the PDE solution at time $k\tau$, i.e., $w^k(\,\cdot\,) \approx w(k\,\tau, \,\cdot\,)$. Note that \cref{geometric_heat_eq} follows from \cref{eq:heatflow}, by approximating the time derivative via the implicit Euler scheme:  $$\partial_t w(k\tau, x) \approx \frac{w((k+1)\tau, x) - w(k\tau, x)}{\tau}. $$
 We first present experiments for initial data with $|\{w^0 \neq0\}| >0$, see \cref{comp_beethoven}. Here $|\cdot|$ denotes the surface Lebesque measure, i.e., $$|\{w^0 \neq0\}| = \int_\mathcal{S} \chi_{\{w^0 \neq 0\}} dS \overset{!}{>} 0.$$
 \begin{figure}
     \centering    
@@ -942,14 +982,25 @@ This construction is motivated by the fundamental solution of the heat equation 
 \]
 As \( t \to 0 \), this kernel converges in the sense of distributions to the Dirac delta. Thus, using a Gaussian of the form above with a small variance \( \delta \) provides a smooth approximation of a point heat source. This allows us to avoid the singularities associated with delta functions while still locally mimicking their influence.\\
 In practice, we want to make $\delta$ as small as possible. However, taking $\delta$ small comes with increased demands on the sampling strategy, since we want to make sure that the region with $w^\delta >> 0$ is represented within each batch. For this, we use an adaptive version of the box-algorithm presented in \cref{box_algorithm}: 
-\begin{algorithm}(\textbf{Local box-grid refinement:})
-    \begin{enumerate}
-    \item we start by extracting a uniform box grid on the occupied region, as in \cref{box_algorithm,clever_sampling}
-    \item we identify the box containing $x_0$ and mark it as level $k$ for a given $k\in \mathbb N, k > 0$
-    \item  we repeat the following process $(k-1)$-times: starting with the highest level we mark for each box at level $m\leq k$ all direct neighbors that have not been marked yet as level $m-1$
-    \item we subdivide each box depending on its level and safe the respective box midpoints: level $k$ gets divided k times, $\dots$,  level one gets divided once, level zero doesn't get divided 
-    \item we then apply the sampling strategy from above (\cref{clever_sampling}) to the refined box midpoints; the box midpoint density is highest near the initial source and decreases in regions further away
-    \end{enumerate} 
+\begin{algorithm}\textbf{(Local Box-Grid Refinement:)}
+\begin{enumerate}
+    \item Extract a uniform box grid in the occupied region, as described in \cref{box_algorithm,clever_sampling}.
+    
+    \item Identify the box containing the point \(x_0\) and mark it as level \(k\), for a given \(k \in \mathbb{N}, k > 0\).
+    
+    \item Repeat the following process \((k - 1)\) times: for each box currently marked at level \(m \leq k\), mark all of its unmarked direct neighbors as level \(m - 1\).
+    
+    \item Subdivide each box based on its assigned level and store the corresponding box midpoints:
+    \begin{itemize}
+        \item Boxes at level \(k\) are subdivided \(k\) times,
+        %\item Boxes at level \(k - 1\) are subdivided \(k - 1\) times,
+        \item $\dots$
+        \item Boxes at level \(1\) are subdivided once,
+        \item Boxes at level \(0\) are not subdivided.
+    \end{itemize}
+    
+    \item Apply the sampling strategy described in \cref{clever_sampling} to the midpoints of the refined boxes. This results in a higher sampling density near the initial point \(x_0\), which gradually decreases in regions farther away.
+\end{enumerate}
 \end{algorithm}
 For our experiments, we divide one box into 27 smaller boxes for each level of subdivision, thus dividing the box edge length by three at each level.\\
 Since the midpoints of the resulting grid now aren't uniformly distributed in $D$, we need to introduce integration weights to numerically evaluate the integrals: 
@@ -966,12 +1017,16 @@ Here $\omega_i:= (\frac{1}{27})^m$, if $x_i$ is sampled from the $i$-th box, whi
     thus, the overall "heat mass" is conserved over time.
 \end{remark}
  We show that the neural narrow-band method is able to approximately conserve the heat mass over time, see \cref{mass_conservation}.
-
- \begin{figure}
-     \centering
-     \includegraphics[width=0.8\textwidth]{Figures/accuracyandheatmass.pdf}
-    \caption{Our method approximately conserves total heat over time and shows improved accuracy with increased sampling density near the point source. For these experiments, we used the geometry and initial data shown in \cref{point_bunny}.}
+ \begin{figure}[htbp]
+  \centering
+  \begin{minipage}[l]{0.7\textwidth}
+    \includegraphics[width=\linewidth]{Figures/heatflow_conservation}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[r]{0.29\textwidth}
+    \captionof{figure}{Our method approximately conserves total heat over time and shows improved accuracy with increased sampling density near the point source. For these experiments, we used the geometry and initial data shown in \cref{point_bunny}.}
     \label{mass_conservation}
+  \end{minipage}
 \end{figure}
 \FloatBarrier
 \subsection{Geodesics in Heat}
@@ -992,15 +1047,15 @@ For the Poisson problem, step (ii), we need to introduce boundary conditions; mo
 
 As above, we solve the problem without boundary conditions and afterwards shift the solution by its minimum $w = w_{neural} - \min_\S(w_{neural}).$\\
 We computed geodesic distances using several time steps, and found that \( t \in [0.3, 0.5] \) (depending on the overall size of the object) yields the best trade-off between precision near the source point and accuracy farther away.
-\begin{figure}[b]
+
+\begin{figure}[htbp]
   \centering
-  \begin{minipage}{0.54\linewidth}
+  \begin{minipage}[c]{0.45\textwidth}
     \includegraphics[width=\linewidth]{Figures/geodesics_striped.png}
   \end{minipage}%
-  \hspace{0.02\linewidth}
-  \begin{minipage}{0.45\linewidth}
-    \caption{
-      For the same initial data as in \cref{point_bunny} and with a maximal refinement level of $k=3$, we compute geodesic distances using the neural heat method. For the heat flow, we used one time step of size $\tau = 0.3$. For visualization, we color the mesh according to the approximated function values with equidistant color stripes of width $0.05$.}
+  \hfill
+  \begin{minipage}[c]{0.45\textwidth}
+    \captionof{figure}{For the same initial data as in \cref{point_bunny} and with a maximal refinement level of $k=3$, we compute geodesic distances using the neural heat method. For the heat flow, we used one time step of size $\tau = 0.3$. For visualization, we color the mesh according to the approximated function values with equidistant color stripes of width $0.05$.}
     \label{fig:geodINHeat2}
   \end{minipage}
 \end{figure}
@@ -1045,14 +1100,8 @@ The following appendix contains supplementary proofs and theoretical results use
     
     Therefore, we have that $$\limsup_{i\rightarrow\infty} \left| \int_\Omega \nabla |\phi_i|\cdot n \,\mathrm{dx} - \int_\Omega \nabla |\phi|\cdot n \,\mathrm{dx}\,\right| \leq C\|n_k - n\|_{L^2(\Omega)}\quad \forall k,$$ and taking $k\rightarrow\infty$ we conclude $$\int_\Omega \nabla |\phi_i|\cdot n \,\mathrm{dx} \rightarrow\int_\Omega \nabla |\phi|\cdot n \,\mathrm{dx}.$$
 \end{proof}
-
-\begin{lemma}\textbf{(Tonelli:)}
-    Let $\Omega \in \R^n$ and $F:\R^m\rightarrow\R^{\pm\infty}$ be continuous. Then the integral functional $$\int_\Omega F(u(x))\,\mathrm{dx}$$
-    is weakly lower semicontinuous in $L^p$ ,$1<p<\infty$, if and only if $F$ is convex.
-\end{lemma}
-For proof, see, for example, \cite{Dacorogna}.
 \begin{theorem}\label{min_lsc}
-    Let $u:\R^3\rightarrow\R$ and $n: \R^3\rightarrow\R^3$ . For any $\epsilon \in \R^+$, we have that $$G(\nabla u) := \int_\Omega \min (\epsilon; \|\nabla u+ n\|^2,\|\nabla u - n\|^2)\,\mathrm{dx}$$ is weakly lower semicontinuous wrt.  the $L^2$ Lebesgue metric. After adding the general loss terms $\mathcal{E}_{surf}$ and $\mathcal{E}_{bd}$, the loss functional is further coercive.\\
+    Let $u:\R^3\rightarrow\R$ and $n: \R^3\rightarrow\R^3$ . For any $\epsilon \in \R^+$, we have that $$G(\nabla u) := \int_\Omega \min (\epsilon; \|\nabla u+ n\|^2,\|\nabla u - n\|^2)\,\mathrm{dx}$$ is weakly lower semicontinuous wrt.  the $L^2$ metric. After adding the general loss terms $\mathcal{E}_{surf}$ and $\mathcal{E}_{bd}$, the loss functional is further coercive.\\
     Here $\min(\epsilon;a,b) := \frac{a + b}{2} - \frac{1}{2}\sqrt{(a-b)^2 + \epsilon}$, for $\,a,\,b \in \R$ and obviously for $\epsilon  \rightarrow 0$ we have $\min(\epsilon; \cdot, \cdot) \rightarrow \min(\cdot, \cdot)$. 
 \end{theorem}
 \begin{proof}
@@ -1061,8 +1110,7 @@ For proof, see, for example, \cite{Dacorogna}.
     Overall we have \begin{align*}
         \min (\epsilon; \|\nabla u+ n\|^2,\|\nabla u - n\|^2) = \|\nabla u\|^2 + 1 + \sqrt{(4 \nabla u\cdot n)^2 + \epsilon}=: F(\nabla u), 
     \end{align*}
-    where $F :\R^3 \rightarrow\R
-    $ is convex, thus $\int_\Omega F(\nabla u) dx$ is weakly lower semicontinuous using Tonelli's theorem.\\
+    where $F :\R^3 \rightarrow\R$ is convex, since the sum of convex functions is convex, and $v\mapsto\sqrt{(4 \nabla u\cdot n)^2 + \epsilon}$ is convex as the composition of a convex function with a convex quadratic; thus $\int_\Omega F(\nabla u)\, \mathrm{dx}$ is weakly lower semicontinuous, see \cref{thm:Tonelli}.\\
     \textbf{Coercivity:} Analog to the work done in \cref{ProofExSDF} we can estimate $$\|\nabla u\|^2_{L^2(\Omega)} \leq 2 \int_\Omega \|\nabla \phi \pm n\|^2 + \|n\|^2\,\mathrm{dx}.$$
     We claim that $\min_\epsilon(\cdot, \cdot) + C(\epsilon) \geq \min(\cdot, \cdot)$. If the claim is true, then ultimately 
     \begin{align*}
@@ -1071,12 +1119,14 @@ For proof, see, for example, \cite{Dacorogna}.
  &+ \lambda_1 \|\phi\| ^2_{L^2(\S)} + \lambda_3 \mathcal{E}_{bd} + C(\epsilon),
 \end{align*} 
 and with the same arguments as in \cref{ProofExSDF}, we conclude that the NeatSDF loss functional is coercive.\\
-To show the claim, $\min_\epsilon(\cdot, \cdot) + C(\epsilon) \geq \min(\cdot, \cdot)$, we first rewrite $\min(a,b) = \frac{a+b}{2} - \frac{|a-b|}{2}$. Notice that corresponds to the first term in $\min_\epsilon$. Let $x := |a-b|$, then we need to show, that $\sqrt{x^2 + \epsilon } -x \leq C(\epsilon) := \sqrt{\epsilon}$.
-Indeed $$\sqrt{x^2 + \epsilon } -x = \frac{(x^2+\epsilon) - x^2}{\sqrt{x^2+\epsilon} + x} = 
+To show the claim, $\min_\epsilon(\cdot, \cdot) + C(\epsilon) \geq \min(\cdot, \cdot)$, we first rewrite $\min(a,b) = \frac{a+b}{2} - \frac{|a-b|}{2}$. Notice that corresponds to the first term in $\min_\epsilon$. Let $x := |a-b|$, then we need to show, that $\sqrt{x^2 + \epsilon } -x \leq C(\epsilon) := \sqrt{\epsilon}$. This estimate shows that \(\min_\epsilon(a, b)\) is uniformly bounded from below by \(\min(a, b)\) up to an error of \(\sqrt{\epsilon}\), 
+which ensures that the regularized minimum remains coercive in the limit \(\epsilon \to 0\). \\
+Indeed: $$\sqrt{x^2 + \epsilon } -x = \frac{(x^2+\epsilon) - x^2}{\sqrt{x^2+\epsilon} + x} = 
 \begin{cases}
 = \sqrt{\epsilon} & \text{if } x = 0 \\
 < \sqrt{\epsilon} & \text{if } x > 0
 \end{cases}$$
+
 This ends the proof.
 \end{proof}
 \clearpage
