@@ -28,8 +28,6 @@
 
 \usepackage{MA_Titlepage}
 
-\bibliographystyle{plainnat}
-
 % % Fix spacing before TOC title and between title and entriesem}
 \setlength{\cftbeforetoctitleskip}{-3em}  % space before "Contents"
 \setlength{\cftaftertoctitleskip}{2em}  % space after "Contents" and before entries
@@ -1086,53 +1084,59 @@ We computed geodesic distances using several time steps, and found that \( t \in
 \paragraph{Neural SDFs:} Despite the effectiveness of the proposed methods, several limitations remain. For the SDF approach, one key issue is the reliance on the box algorithm to distinguish between the inside and outside regions of the geometry. As discussed earlier, this algorithm may fail in certain cases. While we proposed to compute generalized winding numbers as a more robust alternative, this approach requires significantly more precomputation. Another limitation of our SDF methods is the training of two separate neural networks; this increases the complexity of the training pipeline and may also extend the required computation time. Furthermore, we point out that the NeatSDF method requires more time to compute per iteration than the HeatSDF method, since we additionally need to compute second derivatives.
 \paragraph{Neural PDEs:} The neural narrow-band method also faces certain challenges. Accurately computing second-order derivatives through the neural network is difficult, limiting the method's applicability to problems involving higher-order differential operators, such as surface evolution via mean curvature flow. Furthermore, enforcing most boundary conditions post-training restricts the method's generality. Currently, there are no general and easy-to-use ways to impose boundary conditions. 
 \section{Outlook and Future Work}
-Neural orientation methods reduce the need to compute signed distance functions from unoriented point clouds. In scenarios where normal information is available or can be reliably estimated, we propose incorporating an on-surface normal loss, which could enhance the model's accuracy, potentially in combination with loss terms from HeatSDF or NeatSDF. Preliminary experiments suggest that such a loss function can recover SDFs without requiring explicit inside/outside segmentation, thereby reducing the need for extensive preprocessing.\par
-Additionally, a neural adaptation of the method proposed by \cite{FengCrane} offers a promising direction for defining yet another head-based neural SDF approach. As a first step, we would diffuse the normals of an oriented point cloud, yielding a continuous normal field. Such a field could then be used analogously to our SDF reconstruction step.\par
+Neural orientation methods reduce the need to compute signed distance functions from \emph{unoriented} point clouds. In scenarios where normal information is available or can be reliably estimated, we propose incorporating an on-surface normal loss, which could enhance the model's accuracy, potentially in combination with loss terms from HeatSDF or NeatSDF. Preliminary experiments suggest that such a loss function can recover SDFs without requiring explicit inside/outside segmentation, thereby reducing the need for extensive preprocessing.\par
+Additionally, a neural adaptation of the method proposed by \cite{FengCrane} offers a promising direction for defining yet another head-based neural SDF approach. As a first step, we would diffuse the normals of an oriented point cloud, yielding a continuous normal field. This field could be used in a manner similar to our heat step.\par
 We also aim to improve the proposed narrow-band framework to make it usable for higher-order partial differential equations. In particular, we are interested in exploring the potential of neural networks for modeling surface deformations.\par
-Beyond these topics, some more general questions remain. For example, the use of more advanced network architectures, such as ResNet (\cite{he2015deepresiduallearningimage}) appears promising for improving approximation quality. Additionally, it remains unclear whether an experimental convergence behavior can be established for the proposed methods.
+Beyond these topics, some more general questions remain. For example, the use of more advanced network architectures, such as ResNet (\cite{he2015deepresiduallearningimage}) appears promising for improving approximation quality. \par
+Additionally, it remains unclear whether an experimental convergence behavior can be established for the proposed methods.
 \endgroup
+{
+%\footnotesize
+\setlength{\bibsep}{7pt}
+\bibliographystyle{plainnat}
 \bibliography{references.bib}
+}
+
 \appendix
 \chapter{Theoretical Background}\label{appendix:A}
 The following appendix contains supplementary proofs and theoretical results used but not proven in the main text.
 \begin{proof}[Proof of \cref{technicalLemma}]
-    Let $\phi_i\in H^1(\Omega)$, such that $\phi_i\xrightharpoonup{H^1(\Omega)} \phi$, and let $n$ be approximated by a sequence of smooth and compactly supported functions $n_k\in C_c^\infty(\Omega, \R^3)$, $n_k \xrightarrow{L^2(\Omega)} n$. Then $ \forall k\in \mathbb N, \, \forall \phi \in H^1(\Omega):$
+    Let $\phi_i\in H^1(\Omega)$, such that $\phi_i\xrightharpoonup{H^1(\Omega)} \phi$, and let $n\in L^2(\Omega, \R^3)$ be approximated by a sequence of smooth and compactly supported functions \mbox{$(n_k)_{k\in \mathbb N}\subset C_c^\infty(\Omega, \R^3)$}, with $n_k \xrightarrow{L^2(\Omega)} n$. Then $ \forall k\in \mathbb N, \, \forall \phi \in H^1(\Omega):$
     $$\int_\Omega \nabla |\phi|\cdot n_k \,\mathrm{d}x = - \int_\Omega |\phi| \nabla \cdot n_k \,\mathrm{d}x,$$
     where we used integration by parts. Thus, the map $$
     H^1(\Omega) \rightarrow\R,\quad
-        \psi \mapsto \int_\Omega \nabla |\psi|\cdot n_k \,\mathrm{d}x
+        \psi \mapsto \int_\Omega \nabla |\psi|\cdot n_k \,\mathrm{d}x,
      $$ 
-    is $L^2$-continuous for fixed $n_k$. By Rellich's theorem $$\lim_{i\rightarrow\infty}\int_\Omega \nabla |\phi_i|\cdot n_k \,\mathrm{d}x = \int_\Omega \nabla |\phi|\cdot n_k \,\mathrm{d}x, \quad \forall k.$$ Further, we have
+    is $L^2$-continuous for fixed $k\in \mathbb N$. By Rellich's theorem $$\lim_{i\rightarrow\infty}\int_\Omega \nabla |\phi_i|\cdot n_k \,\mathrm{d}x = \int_\Omega \nabla |\phi|\cdot n_k \,\mathrm{d}x, \quad \forall k.$$ Further, we have
     \begin{align*}
-        &\left|\int_\Omega \nabla |\phi_i|\cdot n \,\mathrm{d}x - \int_\Omega \nabla |\phi|\cdot n \,\mathrm{d}x\,\right|\\
+        &\left|\int_\Omega \nabla |\phi_i|\cdot n \,\mathrm{d}x - \int_\Omega \nabla |\phi|\cdot n \,\mathrm{d}x\,\right|\\\displaybreak[3]
        \overset{\Delta\text{-ineq.        }\,}{\leq} &\left|\int_\Omega \nabla |\phi_i|\cdot n_k \,\mathrm{d}x - \int_\Omega \nabla |\phi|\cdot n_k \,\mathrm{d}x\,\right| \\&\quad \quad + \left| \int_\Omega \nabla |\phi_i| \cdot (n_k - n) \, \,\mathrm{d}x\, \right| 
  + \left| \int_\Omega \nabla |\phi| \cdot (n_k - n) \, \,\mathrm{d}x\, \right|\\
-       \overset{\text{Hölder}}{\leq} &\left|\int_\Omega \nabla |\phi_i|\cdot n_k \,\mathrm{d}x - \int_\Omega \nabla |\phi|\cdot n_k \,\mathrm{d}x\,\right| \\ &\quad \quad+ \|\nabla \phi_i\|_{L^2(\Omega)} \|n_k - n\|_{L^2(\Omega)}  + \|\nabla \phi\|_{L^2(\Omega)} \|n_k - n\|_{L^2(\Omega)}\\
-       \overset{\phi, \phi_i \in H^1 }{\leq} &\left|\int_\Omega \nabla |\phi_i|\cdot n_k \,\mathrm{d}x - \int_\Omega \nabla |\phi|\cdot n_k \,\mathrm{d}x\,\right| + C\|n_k - n\|_{L^2(\Omega)},\quad C\in \R^+.
+       \overset{\text{Hölder}}{\leq} &\left|\int_\Omega \nabla |\phi_i|\cdot n_k \,\mathrm{d}x - \int_\Omega \nabla |\phi|\cdot n_k \,\mathrm{d}x\,\right| \\  &\quad \quad+ \|\nabla \phi_i\|_{L^2(\Omega)} \|n_k - n\|_{L^2(\Omega)}  + \|\nabla \phi\|_{L^2(\Omega)} \|n_k - n\|_{L^2(\Omega)}\\ 
+       \overset{\phi, \phi_i \in H^1 }{\leq} &\left|\int_\Omega \nabla |\phi_i|\cdot n_k \,\mathrm{d}x - \int_\Omega \nabla |\phi|\cdot n_k \,\mathrm{d}x\,\right| + C\|n_k - n\|_{L^2(\Omega)},
     \end{align*}
-    
-    Therefore, we have that $$\limsup_{i\rightarrow\infty} \left| \int_\Omega \nabla |\phi_i|\cdot n \,\mathrm{d}x - \int_\Omega \nabla |\phi|\cdot n \,\mathrm{d}x\,\right| \leq C\|n_k - n\|_{L^2(\Omega)}\quad \forall k,$$ and taking $k\rightarrow\infty$ we conclude $$\int_\Omega \nabla |\phi_i|\cdot n \,\mathrm{d}x \rightarrow\int_\Omega \nabla |\phi|\cdot n \,\mathrm{d}x.$$
+    for some constant $C\in \R^+$.    Therefore, we have that for all $k$ $$\limsup_{i\rightarrow\infty} \,\left| \int_\Omega \nabla |\phi_i|\cdot n \,\mathrm{d}x - \int_\Omega \nabla |\phi|\cdot n \,\mathrm{d}x\,\right| \leq C\|n_k - n\|_{L^2(\Omega)},$$ and taking $k\rightarrow\infty$ we conclude $$\int_\Omega \nabla |\phi_i|\cdot n \,\mathrm{d}x \rightarrow\int_\Omega \nabla |\phi|\cdot n \,\mathrm{d}x.$$
 \end{proof}
 \begin{theorem}\label{min_lsc}
-    Let $u:\R^3\rightarrow\R$ and $n: \R^3\rightarrow\R^3$ . For any $\epsilon \in \R^+$, we have that $$G(\nabla u) \coloneqq \int_\Omega \min (\epsilon; \|\nabla u+ n\|^2,\|\nabla u - n\|^2)\,\mathrm{d}x$$ is weakly lower semicontinuous wrt.  the $L^2$ metric. After adding the general loss terms $\mathcal{E}_{surf}$ and $\mathcal{E}_{bd}$, the loss functional is further coercive.\\
+    Let $u:\R^3\rightarrow\R$ and $n: \R^3\rightarrow\R^3$ . For any $\epsilon \in \R^+$, we have that $$G(\nabla u) \coloneqq \int_\Omega \min (\epsilon; \|\nabla u+ n\|^2,\|\nabla u - n\|^2)\,\mathrm{d}x$$ is lower semicontinuous with respect to weak $L^2$-convergence. Additionally, after adding the loss terms $\mathcal{E}_{surf}$ and $\mathcal{E}_{bd}$, the loss functional is coercive.\\
     Here $\min(\epsilon;a,b) \coloneqq \frac{a + b}{2} - \frac{1}{2}\sqrt{(a-b)^2 + \epsilon}$, for $\,a,\,b \in \R$ and obviously for $\epsilon  \rightarrow 0$ we have $\min(\epsilon; \cdot, \cdot) \rightarrow \min(\cdot, \cdot)$. 
 \end{theorem}
 \begin{proof}
-\textbf{Weak lower semicontinuity:} We first notice, that similar to \cref{ProofExSDF} we have that $$\|\nabla u \pm n\|^2 = \|\nabla u\|^2 \pm 2 \nabla u \cdot n + 1.$$
+\textbf{Weak lower semicontinuity:} We first notice that, just like in \cref{ProofExSDF}, we have that $$\|\nabla u \pm n\|^2 = \|\nabla u\|^2 \pm 2 \nabla u \cdot n + 1.$$
     We can thus rewrite $$\sqrt{(\|\nabla u + n\|^2 - \|\nabla u - n\|^2)^2 + \epsilon} = \sqrt{(4 \nabla u\cdot n)^2 + \epsilon}$$
     Overall we have \begin{align*}
-        \min (\epsilon; \|\nabla u+ n\|^2,\|\nabla u - n\|^2) = \|\nabla u\|^2 + 1 + \sqrt{(4 \nabla u\cdot n)^2 + \epsilon}=: F(\nabla u), 
+        \min (\epsilon; \|\nabla u+ n\|^2,\|\nabla u - n\|^2) = \|\nabla u\|^2 + 1 + \sqrt{(4 \nabla u\cdot n)^2 + \epsilon}=: F(\nabla u). 
     \end{align*}
-    where $F :\R^3 \rightarrow\R$ is convex, since the sum of convex functions is convex, and $v\mapsto\sqrt{(4 \nabla u\cdot n)^2 + \epsilon}$ is convex as the composition of a convex function with a convex quadratic; thus $\int_\Omega F(\nabla u)\, \mathrm{d}x$ is weakly lower semicontinuous, see \cref{thm:Tonelli}.\\
+    Since $v\mapsto\sqrt{(4 \nabla u\cdot n)^2 + \epsilon}$ is convex as the composition of a convex function with a convex quadratic, and furthermore the sum of convex functions is convex, we conclude  that $F :\R^3 \rightarrow\R$ is convex. Thus, $\int_\Omega F(\nabla u)\, \mathrm{d}x$ is weakly lower semicontinuous, see \cref{thm:Tonelli}.\\
     \textbf{Coercivity:} Analog to the work done in \cref{ProofExSDF} we can estimate $$\|\nabla u\|^2_{L^2(\Omega)} \leq 2 \int_\Omega \|\nabla \phi \pm n\|^2 + \|n\|^2\,\mathrm{d}x.$$
-    We claim that $\min_\epsilon(\cdot, \cdot) + C(\epsilon) \geq \min(\cdot, \cdot)$. If the claim is true, then ultimately 
+    We claim that $\min_\epsilon(\cdot, \cdot) + C(\epsilon) \geq \min(\cdot, \cdot)$, for some $C(\epsilon) > 0$. If the claim is true, then ultimately 
     \begin{align*}
     \lambda_2\|\nabla \phi\| ^2_{L^2(\Omega)} + \lambda_1 \|\phi\| ^2_{L^2(\S)}
  &\leq 2 \lambda_2\int_\Omega\min_\epsilon(\|\nabla \phi + n\|^2, \|\nabla \phi - n\|^2) \,\mathrm{d}x \\ 
  &+ \lambda_1 \|\phi\| ^2_{L^2(\S)} + \lambda_3 \mathcal{E}_{bd} + C(\epsilon),
 \end{align*} 
 and with the same arguments as in \cref{ProofExSDF}, we conclude that the NeatSDF loss functional is coercive.\\
-To show the claim, $\min_\epsilon(\cdot, \cdot) + C(\epsilon) \geq \min(\cdot, \cdot)$, we first rewrite $\min(a,b) = \frac{a+b}{2} - \frac{|a-b|}{2}$. Notice that corresponds to the first term in $\min_\epsilon$. Let $x \coloneqq |a-b|$, then we need to show, that $\sqrt{x^2 + \epsilon } -x \leq C(\epsilon) \coloneqq \sqrt{\epsilon}$. This estimate shows that \(\min_\epsilon(a, b)\) is uniformly bounded from below by \(\min(a, b)\) up to an error of \(\sqrt{\epsilon}\), 
+To show that indeed $\min_\epsilon(\cdot, \cdot) + C(\epsilon) \geq \min(\cdot, \cdot)$, we first rewrite $\min(a,b) = \frac{a+b}{2} - \frac{|a-b|}{2}$. The first term $\big(\frac{a+b}{2}\big)$ appears in both $\min_\epsilon$ and $\min$. Let $x \coloneqq |a-b|$, then we need to show, that $\sqrt{x^2 + \epsilon } -x \leq C(\epsilon) \coloneqq \sqrt{\epsilon}$. This estimate shows that \(\min_\epsilon(a, b)\) is uniformly bounded from below by \(\min(a, b)\) up to an error of \(\sqrt{\epsilon}\), 
 which ensures that the regularized minimum remains coercive in the limit \(\epsilon \to 0\). \\
 Indeed: $$\sqrt{x^2 + \epsilon } -x = \frac{(x^2+\epsilon) - x^2}{\sqrt{x^2+\epsilon} + x} = 
 \begin{cases}
@@ -1170,12 +1174,12 @@ All code developed for this thesis is publicly available in the following GitHub
 \end{table}
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{Figures/HeatSDF_isosurfaces.pdf}
+    \includegraphics[width=0.8\textwidth]{Figures/HeatSDF_isosurfaces.pdf}
     \caption{Extracted hypersurfaces $\mathcal{M}_c$ at different values $c$ for SDFs constructed using the HeatSDF method.}
 \end{figure}
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth, page = 2]{Figures/NeatSDF_isosurfaces.pdf}
+    \includegraphics[width=0.9\textwidth, page = 2]{Figures/NeatSDF_isosurfaces.pdf}
     \caption{Extracted hypersurfaces $\mathcal{M}_c$ at different values $c$ for SDFs constructed using the NeatSDF method.}
 \end{figure}
 %
