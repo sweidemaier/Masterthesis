@@ -148,7 +148,7 @@ Finally, I am deeply grateful to my family and my girlfriend for their constant 
 \section{Introduction}
 \begin{figure}
     \centering
-    \includegraphics[trim=0.9cm 0pt 3.5cm 1.0cm, clip,width=0.8\linewidth]{Figures/teaser_beethoven.pdf}
+    \includegraphics[width=0.85\linewidth]{Figures/teaser_beethoven2.pdf}
     \caption{We present a framework that is capable of learning high-quality signed distance functions from unoriented point clouds (\textbf{top left}). These neural SDFs not only provide accurate representations of the zero-level set geometry (\textbf{top right}) but are also sufficiently smooth and provide reliable gradients to enable the numerical solution of partial differential equations using narrow-band methods. As a demonstration, we show that our approach can be used to compute a time step of the heat equation (\textbf{bottom right}) and subsequently approximate geodesic distances via a neural variant of the heat method (\textbf{bottom left}). }
     \label{teaser}
 \end{figure}
@@ -960,7 +960,7 @@ For simple geometries of $\Omega$, for example, for polygonal domains, a polynom
     \label{poissonpb}
 \end{figure}
 
-\subsection{Heatflow}\label{section_heatflow}
+\subsection{Heat flow}\label{section_heatflow}
 Next, we aim to solve the geometric heat equation, given by
 \begin{align}\label{eq:heatflow}
     0 &= \partial_t w - \Delta_{\mathcal{M}_c} w,\notag \\
